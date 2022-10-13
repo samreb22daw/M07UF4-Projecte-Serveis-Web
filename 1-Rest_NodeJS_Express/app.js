@@ -18,25 +18,30 @@ let jugades = [
     { jugada: 'tisora' }
 ];
 
-let codiPartida = [
+let codisPartides = [
     { gameCode: 0 }
 ];
 
 
 
 
-app.post('/iniciarJoc/codiPartida', (req, res) => {
-    let nouCodi = { gameCode: parseInt(req.body.gameCode) }; // req.body = sirve para rellenar y añadir nuevos 'campos'
-    for (let i = 0; i < codiPartida.length; i++) {
-        if (codiPartida[i].gameCode == nouCodi.gameCode) {
-            res.send(`El codi de partida està repetit. Introdueix un codi de partida diferent.`);
-            break;
+app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
+    let codiRepetit = false;
+    let codiNou = []; 
+    for (let i of codisPartides){
+        if (i.gameCode == req.params.gameCode){
+            codiRepetit = true;
         }
     }
-    codiPartida.push(nouCodi);
-    res.send(codiPartida);
 
-
+    // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no
+    if (codiRepetit == true){
+        res.send("El codi de partida introduït està repetit. Introdueix un codi de partida diferent.");
+    }else {
+        codiNou = {gameCode: parseInt(req.params.gameCode)};
+        codisPartides.push(codiNou);
+        res.send(codisPartides);
+    }
 });
 
 app.get('/consultarEstatPartida/codiPartida : JSON', (req, res) => {
