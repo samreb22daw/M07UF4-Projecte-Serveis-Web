@@ -23,9 +23,8 @@ let codisPartides = [
 ];
 
 
-
-
 app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
+    // El código de la nueva partida es introducido desde los parámetros de la dirección.
     let codiRepetit = false;
     let codiNou = []; 
     for (let i of codisPartides){
@@ -34,7 +33,7 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
         }
     }
 
-    // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no
+    // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no.
     if (codiRepetit == true){
         res.send("El codi de partida introduït està repetit. Introdueix un codi de partida diferent.");
     }else {
