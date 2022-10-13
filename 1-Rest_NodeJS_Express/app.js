@@ -22,7 +22,6 @@ let codisPartides = [
     { gameCode: 0 }
 ];
 
-
 app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     // El código de la nueva partida es introducido desde los parámetros de la dirección.
     let codiRepetit = false;
