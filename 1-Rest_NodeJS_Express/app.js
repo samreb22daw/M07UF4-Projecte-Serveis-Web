@@ -19,9 +19,11 @@ let jugades = [
 ];
 
 let codisPartides = [
-    { gameCode: 0 }
 ];
 
+let prova = [
+
+];
 
 app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     // El código de la nueva partida es introducido desde los parámetros de la dirección. 
@@ -43,12 +45,22 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     }
 });
 
-app.get('/consultarEstatPartida/codiPartida : JSON', (req, res) => {
+app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
 
 });
 
-app.put('/moureJugador/codiPartida/jugador/tipusMoviment', (req, res) => {
-
+app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => { 
+    let partidaActual = {codiPartida: parseInt(req.params.codiPartida), jugador: parseInt(req.params.jugador), jugada: req.params.jugada};
+    
+    prova.push(partidaActual);
+    for (let i of codisPartides){
+        if (i.gameCode == prova.codiPartida){
+            
+        }else{
+            EL CODIGO NO EXISTE
+        }
+    }
+    res.send(prova);
 });
 
 app.delete('/acabarJoc/codiPartida', (req, res) => {
