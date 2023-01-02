@@ -40,7 +40,7 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     if (codiRepetit == true){
         res.send("El codi de partida introduït està repetit. Introdueix un codi de partida diferent.");
     }else {
-        codiNou = {gameCode: parseInt(req.params.gameCode), jugadaJugador1:'', jugadaJugador2:''};
+        codiNou = {gameCode: parseInt(req.params.gameCode), jugadaJugador1:'', jugadaJugador2:'', guanyadesJugador1:'',guanyadesJugador2:''};
         codisPartides.push(codiNou);
         res.send(codisPartides);
     }
