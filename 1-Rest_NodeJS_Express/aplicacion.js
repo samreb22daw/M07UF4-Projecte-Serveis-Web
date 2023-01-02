@@ -82,7 +82,7 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
                 console.log("Ningún jugador ha escollit moviment.");
                 res.send("Ningún jugador ha escollit moviment."); //
             }else if( eleccionJugador2 == ''){   
-                console.log("El jugador 2 no ha escollit moviment.");                  //
+                console.log("El jugador 2 no ha escollit moviment."); //
                 res.send("El jugador 2 no ha escollit moviment."); //
             }else if( eleccionJugador1 == ''){                     //
                 console.log("El jugador 1 no ha escollit moviment.");
