@@ -35,11 +35,12 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     }
 });
 
+
 app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
-    codisPartides.forEach(function (partida) {
-        if (partida.gameCode === parseInt(req.params.codiPartida)) {
-            let partidaActual = { gameCode: partida.gameCode, GuanyadesJugador1: partida.guanyadesJugador1, GuanyadesJugador2: partida.guanyadesJugador2 };
-            res.send(partidaActual);
+    codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos en codisPartides.
+        if (partida.gameCode === parseInt(req.params.codiPartida)) {  // Buscamos el parámetro de codiPartida
+            let partidaActual = { gameCode: partida.gameCode, GuanyadesJugador1: partida.guanyadesJugador1, GuanyadesJugador2: partida.guanyadesJugador2 }; // Creamos un nuevo array que enseñaremos omitiendo los datos de jugada
+            res.send(partidaActual); // Lo mostramos.
         }
     })
 
@@ -48,11 +49,11 @@ app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
 
 app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
     codisPartides.forEach(function (partida) {
-        if (partida.gameCode === parseInt(req.params.codiPartida)) {
-            if (req.params.jugador == 1) {
-                partida.jugadaJugador1 = req.params.jugada;
-            } else if (req.params.jugador == 2) {
-                partida.jugadaJugador2 = req.params.jugada;
+        if (partida.gameCode === parseInt(req.params.codiPartida)) { // Buscamos la partida con el codiPartida que hemos pedido.
+            if (req.params.jugador == 1) { // Filtramos el jugador que estamos pidiendo.    *1
+                partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador pedido.  *2
+            } else if (req.params.jugador == 2) { // *1
+                partida.jugadaJugador2 = req.params.jugada; // *2
             }
         }
     })
@@ -63,35 +64,34 @@ app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
 app.put('/jugarPartida/:codiPartida', (req, res) => {
     codisPartides.forEach(function (partida) {
         if (partida.gameCode === parseInt(req.params.codiPartida)) {
-            eleccionJugador1 = partida.jugadaJugador1;
-            eleccionJugador2 = partida.jugadaJugador2;
+            eleccionJugador1 = partida.jugadaJugador1; //Asignamos variables para que sea mas fácil.
+            eleccionJugador2 = partida.jugadaJugador2; //
 
-            if( eleccionJugador1 == '' && eleccionJugador2 == ''){
-                res.send ("Ningún jugador ha escollit moviment.");
-            }else if( eleccionJugador2 == ''){
-                res.send("El jugador 2 no ha escollit moviment.");
-            }else if( eleccionJugador1 == ''){
-                res.send("El jugador 1 no ha escollit moviment.");
-            }else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){
+            if( eleccionJugador1 == '' && eleccionJugador2 == ''){ // Filtramos para saber cuando han escogido movimiento los jugadores.
+                res.send ("Ningún jugador ha escollit moviment."); //
+            }else if( eleccionJugador2 == ''){                     //
+                res.send("El jugador 2 no ha escollit moviment."); //
+            }else if( eleccionJugador1 == ''){                     //
+                res.send("El jugador 1 no ha escollit moviment."); //
+            }else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){ // Mostramos si la partida tiene un ganador y ya ha terminado.
                 res.send('La partida ha finalitzat. Has d\'acabar la partida manualment.');
             }
-            else if (eleccionJugador1 == eleccionJugador2) {
+            else if (eleccionJugador1 == eleccionJugador2) { // Mostramos si los jugadores han empatado
                 res.send("Els jugadors han empatat la partida.");
-            } else if (
+            } else if ( // Filtramos si el jugador1 ha ganado al jugador2
                 (eleccionJugador1 === 'pedra' && eleccionJugador2 === 'tisora') ||
                 (eleccionJugador1 === 'paper' && eleccionJugador2 === 'pedra') ||
                 (eleccionJugador1 === 'tisora' && eleccionJugador2 === 'paper')
-            ) {
-                partida.guanyadesJugador1 = partida.guanyadesJugador1 + 1;
-                if(partida.guanyadesJugador1 == 3){
+            ) { 
+                partida.guanyadesJugador1 = partida.guanyadesJugador1 + 1; // Sumamos al jugador1 una ronda ganada.
+                if(partida.guanyadesJugador1 == 3){ // Filtramos si el jugador1 ha ganado la ronda o la partida.
                     res.send("EL JUGADOR 1 HA GUANYAT LA PARTIDA!!!");
                 }else{
                     res.send("El jugador 1 ha guanyat el torn.");
                 }
-                res.send("El jugador 1 ha guanyat el torn.");
-            } else {
-                partida.guanyadesJugador2 = partida.guanyadesJugador2 + 1;
-                if(partida.guanyadesJugador2 == 3){
+            } else { // Si no ha ganado el jugador1 significa que ha ganado el jugador2.
+                partida.guanyadesJugador2 = partida.guanyadesJugador2 + 1; // Sumamos una ronda ganada al jugador2.
+                if(partida.guanyadesJugador2 == 3){ // Filtramos si el jugador2 ha ganado la ronda o la partida.
                     res.send("EL JUGADOR 2 HA GUANYAT LA PARTIDA!!!");
                 }else{
                     res.send("El jugador 2 ha guanyat el torn.");
