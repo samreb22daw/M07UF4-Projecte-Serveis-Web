@@ -18,6 +18,7 @@ let jugades = [
     { jugada: 'tisora' }
 ];
 
+
 let codisPartides = [
 ];
 
@@ -39,13 +40,24 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     if (codiRepetit == true){
         res.send("El codi de partida introduït està repetit. Introdueix un codi de partida diferent.");
     }else {
-        codiNou = {gameCode: parseInt(req.params.gameCode)};
+        codiNou = {gameCode: parseInt(req.params.gameCode), jugadaJugador1:'', jugadaJugador2:''};
         codisPartides.push(codiNou);
         res.send(codisPartides);
     }
 });
 
 app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
+    codisPartides.forEach(function(partida) {
+        if (partida.gameCode === parseInt(req.params.codiPartida)) {
+            res.send(partida);
+        }
+    })
+    
+    res.send()
+});
+
+app.get('/consultarServidor', (req, res) => {
+    res.send("Servidor funcionant correctament!");
 
 });
 
@@ -57,7 +69,7 @@ app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
         if (i.gameCode == prova.codiPartida){
             
         }else{
-            EL CODIGO NO EXISTE
+            //EL CODIGO NO EXISTE
         }
     }
     res.send(prova);
