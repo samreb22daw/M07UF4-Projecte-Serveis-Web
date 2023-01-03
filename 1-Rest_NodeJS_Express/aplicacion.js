@@ -58,19 +58,24 @@ app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
 app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
     codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos de "codisPartides" con el bucle forEach
         if (partida.gameCode === parseInt(req.params.codiPartida)) { // Buscamos la partida con el codiPartida que hemos indicado en la URL
-            if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora'){ // Comprobamos que las jugadas solo sean las disponibles (pedra, paper o tisora)
-                if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
-                    partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
-                    console.log('El jugador 1 ha escollit jugada.');
-                    res.send(codisPartides);
-                } else if (req.params.jugador == 2) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 2)
-                    partida.jugadaJugador2 = req.params.jugada; // // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
-                    console.log('El jugador 2 ha escollit jugada.');
-                    res.send(codisPartides);
+            if (req.params.jugador == 1 || req.params.jugador == 2){ // Filtramos para que solo se pueda indicar que somos el jugador 1 o el jugador 2
+                if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora'){ // Filtramos para que únicamente se pueda indicar una jugada disponible (pedra, paper o tisora)
+                    if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
+                        partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
+                        console.log('El jugador 1 ha escollit jugada.');
+                        res.send(codisPartides);
+                    } else if (req.params.jugador == 2) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 2)
+                        partida.jugadaJugador2 = req.params.jugada; // // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
+                        console.log('El jugador 2 ha escollit jugada.');
+                        res.send(codisPartides);
+                    }
+                }else{
+                    console.log("Un jugador ha indicat una jugada no disponible. Le jugades disponibles són 'pedra', 'paper' o 'tisora'.");
+                    res.send("La jugada que has introduït no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'."); // Si se indica una jugada no disponible, salta este mensaje indicando que la jugada es incorrecta
                 }
-            }else { // Si la jugada introducida por parámetros de un jugador no es correcta, indicamos por un mensaje que la jugada no és correcta y tiene que indicar una jugada disponible
-                console.log("Un jugador ha indicat una jugada no disponible. Le jugades disponibles són 'pedra', 'paper' o 'tisora'.");
-                res.send("La jugada que has introduït no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.");
+            }else{
+                console.log("Un jugador ha indicat un número de jugador no disponible. Els jugadors disponibles són l'1 o el 2.");
+                res.send("Número de jugador no disponible. Indica si ets el jugador 1 o el jugador 2."); // Si se indica un número de jugador diferente a 1 o 2, salta este mensaje indicando que no es posible
             }
         }
     })
@@ -95,8 +100,8 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
                 res.send("El jugador 1 no ha escollit moviment."); //
             }
             else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){ // Comprobamos si la partida no ha acabado (una partida acaba cuando se llega a 3 rondas ganadas)
-                console.log('La partida ha finalitzat. Has d\'acabar la partida manualment.');
-                res.send('La partida ha finalitzat. Has d\'acabar la partida manualment.');
+                console.log('La partida ha finalitzat. Has de finalitzar la partida manualment.');
+                res.send('La partida ha finalitzat. Has de finalitzar la partida manualment.');
             }
             else if (eleccionJugador1 == eleccionJugador2) { // Mostramos si los jugadores han empatado
                 console.log("Els jugadors han empatat la partida.");
