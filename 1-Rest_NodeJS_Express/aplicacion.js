@@ -5,7 +5,7 @@
     * @version 1.0 03.10.22
 */
 
-const express = require('express'); // 'const': Quiere decir que no se puede cambiar el contenido de la variable.
+const express = require('express'); // 'const': Quiere decir que no se puede cambiar el contenido de la variable
 const app = express();
 
 app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos trabajar con URLs completas
@@ -71,7 +71,7 @@ app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
                     }
                 }else{ // Si se indica una jugada no disponible, salta este mensaje indicando que la jugada es incorrecta
                     console.log("Un jugador ha indicat una jugada no disponible. Le jugades disponibles són 'pedra', 'paper' o 'tisora'.");
-                    res.send("La jugada que has introduït no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.");
+                    res.send("La jugada que has indicat no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.");
                 }
             }else{ // Si se indica un número de jugador diferente a 1 o 2, salta este mensaje indicando que no es posible
                 console.log("Un jugador ha indicat un número de jugador no disponible. Els jugadors disponibles són l'1 o el 2.");
@@ -90,14 +90,14 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
             eleccionJugador2 = partida.jugadaJugador2; // Asignamos la jugada del jugador 2 a una variable para facilitar el uso de esta
 
             if( eleccionJugador1 == '' && eleccionJugador2 == ''){ // Comprobamos que los dos jugadores han indicado un movimiento. Si no han seleccionado movimiento los dos jugadores, no se puede jugar la partida
-                console.log("Cap jugador ha escollit moviment.");
-                res.send("Cap jugador ha escollit moviment."); //
+                console.log("Cap jugador ha escollit jugada.");
+                res.send("Cap jugador ha escollit jugada."); //
             }else if( eleccionJugador2 == ''){   
-                console.log("El jugador 2 no ha escollit moviment."); //
-                res.send("El jugador 2 no ha escollit moviment."); //
+                console.log("El jugador 2 no ha escollit jugada."); //
+                res.send("El jugador 2 no ha escollit jugada."); //
             }else if( eleccionJugador1 == ''){                     //
-                console.log("El jugador 1 no ha escollit moviment.");
-                res.send("El jugador 1 no ha escollit moviment."); //
+                console.log("El jugador 1 no ha escollit jugada.");
+                res.send("El jugador 1 no ha escollit jugada."); //
             }else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){ // Comprobamos si la partida no ha acabado (una partida acaba cuando se llega a 3 rondas ganadas)
                 console.log('La partida ha finalitzat. Has de finalitzar la partida manualment.');
                 res.send('La partida ha finalitzat. Has de finalitzar la partida manualment.');
@@ -109,10 +109,10 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
                 (eleccionJugador1 === 'paper' && eleccionJugador2 === 'pedra') ||
                 (eleccionJugador1 === 'tisora' && eleccionJugador2 === 'paper')
             ) { 
-                partida.guanyadesJugador1 = partida.guanyadesJugador1 + 1; // Si el jugador 1 ha ganado, sumamos al jugador1 una ronda ganada.
+                partida.guanyadesJugador1 = partida.guanyadesJugador1 + 1; // Si el jugador 1 ha ganado, sumamos al jugador1 una ronda ganada
                 if(partida.guanyadesJugador1 == 3){ // Filtramos para saber si el jugador1 ha ganado la ronda o la partida (gana la partida si ha ganado 3 rondas)
-                    console.log("EL JUGADOR 1 HA GUANYAT LA PARTIDA!!!");
-                    res.send("EL JUGADOR 1 HA GUANYAT LA PARTIDA!!!");
+                    console.log("EL JUGADOR 1 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
+                    res.send("EL JUGADOR 1 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
                 }else{
                     console.log("El jugador 1 ha guanyat el torn.");
                     res.send("El jugador 1 ha guanyat el torn.");
@@ -120,8 +120,8 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
             } else { // Si no ha ganado el jugador1 significa que ha ganado el jugador2
                 partida.guanyadesJugador2 = partida.guanyadesJugador2 + 1; // Cuando el jugador 2 gana una ronda, sumamos una ronda ganada al jugador2
                 if(partida.guanyadesJugador2 == 3){ // Filtramos para saber si el jugador2 ha ganado la ronda o la partida
-                    console.log("EL JUGADOR 2 HA GUANYAT LA PARTIDA!!!");
-                    res.send("EL JUGADOR 2 HA GUANYAT LA PARTIDA!!!");
+                    console.log("EL JUGADOR 2 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
+                    res.send("EL JUGADOR 2 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
                 }else{
                     console.log("El jugador 2 ha guanyat el torn.");
                     res.send("El jugador 2 ha guanyat el torn.");
