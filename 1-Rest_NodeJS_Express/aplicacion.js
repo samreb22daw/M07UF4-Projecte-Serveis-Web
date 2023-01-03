@@ -30,7 +30,7 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
     // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no.
     if (codiRepetit == true) {
         // Si el código de partida ya existe, no se crea la partida, se indica que ya existe
-        res.send("El codi de partida introduït està repetit. Introdueix un codi de partida diferent.");
+        res.send("La partida amb el codi que has introduït ja existeix. Introdueix un codi de partida diferent.");
         console.log(`La partida amb codi ${req.params.gameCode} ja existeix.`);
     } else {
         // Si el código de la partida no existe, creamos la nueva partida con el código introducido por parámetros añadiéndolo al array "codisPartides"
@@ -58,16 +58,22 @@ app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
 app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
     codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos de "codisPartides" con el bucle forEach
         if (partida.gameCode === parseInt(req.params.codiPartida)) { // Buscamos la partida con el codiPartida que hemos indicado en la URL
-            if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
-                partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
-                console.log('El jugador 1 ha escollit jugada.');
-            } else if (req.params.jugador == 2) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 2)
-                partida.jugadaJugador2 = req.params.jugada; // // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
-                console.log('El jugador 2 ha escollit jugada.');
+            if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora'){ // Comprobamos que las jugadas solo sean las disponibles (pedra, paper o tisora)
+                if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
+                    partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
+                    console.log('El jugador 1 ha escollit jugada.');
+                    res.send(codisPartides);
+                } else if (req.params.jugador == 2) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 2)
+                    partida.jugadaJugador2 = req.params.jugada; // // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
+                    console.log('El jugador 2 ha escollit jugada.');
+                    res.send(codisPartides);
+                }
+            }else { // Si la jugada introducida por parámetros de un jugador no es correcta, indicamos por un mensaje que la jugada no és correcta y tiene que indicar una jugada disponible
+                console.log("Un jugador ha indicat una jugada no disponible. Le jugades disponibles són 'pedra', 'paper' o 'tisora'.");
+                res.send("La jugada que has introduït no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.");
             }
         }
     })
-    res.send(codisPartides);
 });
 
 
