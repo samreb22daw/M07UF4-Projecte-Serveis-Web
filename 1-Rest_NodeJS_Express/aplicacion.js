@@ -8,8 +8,8 @@
 const express = require('express'); // 'const': Quiere decir que no se puede cambiar el contenido de la variable.
 const app = express();
 
-app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos trabajar con URLs completas.
-app.use(express.json()) // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs).
+app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos trabajar con URLs completas
+app.use(express.json()) // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs)
 
 // Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores y sus victorias
 let codisPartides = [
@@ -134,15 +134,15 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
 
 // ELIMINAR UNA PARTIDA DEL ARRAY --> DELETE: Indicamos por parámetros de la URL el código de la partida que queremos eliminar
 app.delete('/acabarJoc/:codiPartida', (req, res) => {
-    codisPartidesNou = []; // Creamos un array vacío.
-    for (let i of codisPartides) { // Recorremos el array con las partidas.
+    codisPartidesNou = []; // Creamos un array vacío
+    for (let i of codisPartides) { // Recorremos el array con las partidas
         if (i.gameCode != req.params.codiPartida) { 
             codisPartidesNou.push(i); // Subimos al array "codisPartidesNou" todas las partidas que no tengan el código de partida que hemos introducido por parámetros en la URL (partida a eliminar)
         }
     }
-    codisPartides = codisPartidesNou; // Asignamos al array original con las partidas del nuevo sin la partida introducida por parámetros que hemos eliminado.
+    codisPartides = codisPartidesNou; // Asignamos al array original con las partidas del nuevo sin la partida introducida por parámetros que hemos eliminado
     console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`)
-    res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos.
+    res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos
 });
 
 
