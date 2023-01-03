@@ -18,7 +18,7 @@ let codisPartides = [
 
 // INICIAR PARTIDA --> POST: Indicamos en la URL el código de la partida que queremos empezar
 app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
-    // El código de la nueva partida es introducido desde los parámetros de la dirección URL. 
+    // El código de la nueva partida es introducido desde los parámetros de la dirección URL
     let codiRepetit = false;
     let codiNou = [];
     for (let i of codisPartides) {
@@ -27,7 +27,7 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
         }
     }
 
-    // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no.
+    // Revisión de la variable 'codiRepetit' para comprobar si el codigo introducido está repetido o no
     if (codiRepetit == true) {
         // Si el código de partida ya existe, no se crea la partida, se indica que ya existe
         res.send("La partida amb el codi que has introduït ja existeix. Introdueix un codi de partida diferent.");
