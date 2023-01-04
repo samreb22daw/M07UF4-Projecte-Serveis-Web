@@ -46,7 +46,7 @@ app.post('/iniciarJoc/codiPartida/:gameCode', (req, res) => {
 app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
     codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos de "codisPartides" con el bucle forEach
         if (partida.gameCode === parseInt(req.params.codiPartida)) {  // Buscamos en el array "codisPartides" el valor del parámetro introducido en la URL
-            let partidaActual = { gameCode: partida.gameCode, GuanyadesJugador1: partida.guanyadesJugador1, GuanyadesJugador2: partida.guanyadesJugador2 }; // Creamos un nuevo array que enseñaremos por pantalla omitiendo los datos de las jugadas de los usuarios
+            let partidaActual = { gameCode: partida.gameCode, GuanyadesJugador1: partida.guanyadesJugador1, JugadaActualJugador1: partida.jugadaJugador1, GuanyadesJugador2: partida.guanyadesJugador2, JugadaActualJugador2: partida.jugadaJugador2, }; // Creamos un nuevo array que enseñaremos por pantalla mostrando las rondas ganadas de cada jugador, y la jugada actual de cada jugador
             console.log(`L'estat de la partida amb codi ${req.params.codiPartida} ha estat consultat.`);
             res.send(partidaActual); // Mostramos "partidaActual"
         }
@@ -56,24 +56,27 @@ app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
 
 // INDICAR EL NÚMERO DE JUGADOR Y LA JUGADA QUE SACA UN JUGADOR --> PUT: Indicamos el código de partida, el jugador que somos, y la jugada que vamos a sacar mediante parámetros en la URL
 app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
+    let partidaActual = {};
     codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos de "codisPartides" con el bucle forEach
         if (partida.gameCode === parseInt(req.params.codiPartida)) { // Buscamos la partida con el codiPartida que hemos indicado en la URL
-            if (req.params.jugador == 1 || req.params.jugador == 2){ // Filtramos para que solo se pueda indicar que somos el jugador 1 o el jugador 2
-                if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora'){ // Filtramos para que únicamente se pueda indicar una jugada disponible (pedra, paper o tisora)
+            if (req.params.jugador == 1 || req.params.jugador == 2) { // Filtramos para que solo se pueda indicar que somos el jugador 1 o el jugador 2
+                if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora') { // Filtramos para que únicamente se pueda indicar una jugada disponible (pedra, paper o tisora)
                     if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
                         partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
                         console.log('El jugador 1 ha escollit jugada.');
-                        res.send(codisPartides);
+                        partidaActual = { gameCode: partida.gameCode, JugadaJugador1: partida.jugadaJugador1 }; // Creamos un nuevo array que enseñaremos por pantalla omitiendo la jugada del jugador rival
+                        res.send(partidaActual);
                     } else if (req.params.jugador == 2) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 2)
                         partida.jugadaJugador2 = req.params.jugada; // // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
                         console.log('El jugador 2 ha escollit jugada.');
-                        res.send(codisPartides);
+                        partidaActual = { gameCode: partida.gameCode, JugadaJugador2: partida.jugadaJugador2 }; // Creamos un nuevo array que enseñaremos por pantalla omitiendo la jugada del jugador rival
+                        res.send(partidaActual);
                     }
-                }else{ // Si se indica una jugada no disponible, salta este mensaje indicando que la jugada es incorrecta
+                } else { // Si se indica una jugada no disponible, salta este mensaje indicando que la jugada es incorrecta
                     console.log("Un jugador ha indicat una jugada no disponible. Le jugades disponibles són 'pedra', 'paper' o 'tisora'.");
                     res.send("La jugada que has indicat no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.");
                 }
-            }else{ // Si se indica un número de jugador diferente a 1 o 2, salta este mensaje indicando que no es posible
+            } else { // Si se indica un número de jugador diferente a 1 o 2, salta este mensaje indicando que no es posible
                 console.log("Un jugador ha indicat un número de jugador no disponible. Els jugadors disponibles són l'1 o el 2.");
                 res.send("Número de jugador no disponible. Indica si ets el jugador 1 o el jugador 2.");
             }
@@ -89,40 +92,40 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
             eleccionJugador1 = partida.jugadaJugador1; // Asignamos la jugada del jugador 1 a una variable para facilitar el uso de esta
             eleccionJugador2 = partida.jugadaJugador2; // Asignamos la jugada del jugador 2 a una variable para facilitar el uso de esta
 
-            if( eleccionJugador1 == '' && eleccionJugador2 == ''){ // Comprobamos que los dos jugadores han indicado un movimiento. Si no han seleccionado movimiento los dos jugadores, no se puede jugar la partida
+            if (eleccionJugador1 == '' && eleccionJugador2 == '') { // Comprobamos que los dos jugadores han indicado un movimiento. Si no han seleccionado movimiento los dos jugadores, no se puede jugar la partida
                 console.log("Cap jugador ha escollit jugada.");
                 res.send("Cap jugador ha escollit jugada."); //
-            }else if( eleccionJugador2 == ''){   
+            } else if (eleccionJugador2 == '') {
                 console.log("El jugador 2 no ha escollit jugada."); //
                 res.send("El jugador 2 no ha escollit jugada."); //
-            }else if( eleccionJugador1 == ''){                     //
+            } else if (eleccionJugador1 == '') {                     //
                 console.log("El jugador 1 no ha escollit jugada.");
                 res.send("El jugador 1 no ha escollit jugada."); //
-            }else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){ // Comprobamos si la partida no ha acabado (una partida acaba cuando se llega a 3 rondas ganadas)
+            } else if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3) { // Comprobamos si la partida no ha acabado (una partida acaba cuando se llega a 3 rondas ganadas)
                 console.log('La partida ha finalitzat. Has de finalitzar la partida manualment.');
                 res.send('La partida ha finalitzat. Has de finalitzar la partida manualment.');
-            }else if (eleccionJugador1 == eleccionJugador2) { // Mostramos si los jugadores han empatado
+            } else if (eleccionJugador1 == eleccionJugador2) { // Mostramos si los jugadores han empatado
                 console.log("Els jugadors han empatat el torn.");
                 res.send("Els jugadors han empatat el torn.");
             } else if ( // Filtramos para comprobar si el jugador1 ha ganado al jugador2
                 (eleccionJugador1 === 'pedra' && eleccionJugador2 === 'tisora') ||
                 (eleccionJugador1 === 'paper' && eleccionJugador2 === 'pedra') ||
                 (eleccionJugador1 === 'tisora' && eleccionJugador2 === 'paper')
-            ) { 
+            ) {
                 partida.guanyadesJugador1 = partida.guanyadesJugador1 + 1; // Si el jugador 1 ha ganado, sumamos al jugador1 una ronda ganada
-                if(partida.guanyadesJugador1 == 3){ // Filtramos para saber si el jugador1 ha ganado la ronda o la partida (gana la partida si ha ganado 3 rondas)
+                if (partida.guanyadesJugador1 == 3) { // Filtramos para saber si el jugador1 ha ganado la ronda o la partida (gana la partida si ha ganado 3 rondas)
                     console.log("EL JUGADOR 1 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
                     res.send("EL JUGADOR 1 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
-                }else{
+                } else {
                     console.log("El jugador 1 ha guanyat el torn.");
                     res.send("El jugador 1 ha guanyat el torn.");
                 }
             } else { // Si no ha ganado el jugador1 significa que ha ganado el jugador2
                 partida.guanyadesJugador2 = partida.guanyadesJugador2 + 1; // Cuando el jugador 2 gana una ronda, sumamos una ronda ganada al jugador2
-                if(partida.guanyadesJugador2 == 3){ // Filtramos para saber si el jugador2 ha ganado la ronda o la partida
+                if (partida.guanyadesJugador2 == 3) { // Filtramos para saber si el jugador2 ha ganado la ronda o la partida
                     console.log("EL JUGADOR 2 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
                     res.send("EL JUGADOR 2 HA GUANYAT LA PARTIDA, HA ARRIBAT A LES 3 VICTORIES!!!");
-                }else{
+                } else {
                     console.log("El jugador 2 ha guanyat el torn.");
                     res.send("El jugador 2 ha guanyat el torn.");
                 }
@@ -134,15 +137,23 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
 
 // ELIMINAR UNA PARTIDA DEL ARRAY --> DELETE: Indicamos por parámetros de la URL el código de la partida que queremos eliminar
 app.delete('/acabarJoc/:codiPartida', (req, res) => {
-    codisPartidesNou = []; // Creamos un array vacío
+    let partidaExisteix; // Declaramos una variable para controlar si eliminamos una partida o no
+    let codisPartidesNou = []; // Creamos un array vacío
     for (let i of codisPartides) { // Recorremos el array con las partidas
-        if (i.gameCode != req.params.codiPartida) { 
+        if (i.gameCode === parseInt(req.params.codiPartida)){ // Comprobamos que la partida indicada por parámetros existe
+            partidaExisteix = true; // Si la partida existe la variable vale true
+        }else{
+            partidaExisteix = false; // Si la partida introducida por parámetros no existe, la variable vale false
+        }
+        if (i.gameCode != req.params.codiPartida) {
             codisPartidesNou.push(i); // Subimos al array "codisPartidesNou" todas las partidas que no tengan el código de partida que hemos introducido por parámetros en la URL (partida a eliminar)
         }
     }
-    codisPartides = codisPartidesNou; // Asignamos al array original con las partidas del nuevo sin la partida introducida por parámetros que hemos eliminado
-    console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`)
-    res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos
+    codisPartides = codisPartidesNou; 
+    if (partidaExisteix){
+        console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`)
+        res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos
+    }
 });
 
 
