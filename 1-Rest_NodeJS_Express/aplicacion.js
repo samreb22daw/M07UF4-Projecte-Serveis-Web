@@ -149,7 +149,7 @@ app.delete('/acabarJoc/:codiPartida', (req, res) => {
     }
     codisPartides = codisPartidesNou; // Igualamos codiPartides para que tenga todas las partidas que hay en el array 'codisPartidesNou' (de este modo codisPartides tendrá todas las partidas excepto la borrada)
     if (partidaExisteix){ // Si 'partidaExisteix' es true, hemos eliminado correctamente la partida la cual hemos indicado su código de partida por parámetros
-        console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`)
+        console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`);
     }
     res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos. En caso de no eliminar una partida ya que el código de partida no existe, se muestran de todos modos todas las partidas que existen actualmente
 });
