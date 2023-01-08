@@ -22,7 +22,7 @@ public class Api {
     @Path("/consultarServidor")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String servidorConsultat() {
+    public String consultarServidor() {
         return "Servidor funcionant correctament!";
     }
 
