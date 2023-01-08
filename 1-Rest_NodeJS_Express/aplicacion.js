@@ -137,23 +137,21 @@ app.put('/jugarPartida/:codiPartida', (req, res) => {
 
 // ELIMINAR UNA PARTIDA DEL ARRAY --> DELETE: Indicamos por parámetros de la URL el código de la partida que queremos eliminar
 app.delete('/acabarJoc/:codiPartida', (req, res) => {
-    let partidaExisteix; // Declaramos una variable para controlar si eliminamos una partida o no
+    let partidaExisteix = false; // Creamos una variable llamada 'partidaExisteix' que usaremos para controlar si una partida existe. En un inicio vale 'false'
     let codisPartidesNou = []; // Creamos un array vacío
     for (let i of codisPartides) { // Recorremos el array con las partidas
-        if (i.gameCode === parseInt(req.params.codiPartida)){ // Comprobamos que la partida indicada por parámetros existe
-            partidaExisteix = true; // Si la partida existe la variable vale true
-        }else{
-            partidaExisteix = false; // Si la partida introducida por parámetros no existe, la variable vale false
-        }
         if (i.gameCode != req.params.codiPartida) {
             codisPartidesNou.push(i); // Subimos al array "codisPartidesNou" todas las partidas que no tengan el código de partida que hemos introducido por parámetros en la URL (partida a eliminar)
         }
+        if (i.gameCode == req.params.codiPartida){ // Si el codigo de partida que indicamos por parametros existe en el array 'codisPartides', la partida existe, por tanto la variable 'partidaExisteix' es true
+            partidaExisteix = true;
+        }
     }
-    codisPartides = codisPartidesNou; 
-    if (partidaExisteix){
+    codisPartides = codisPartidesNou; // Igualamos codiPartides para que tenga todas las partidas que hay en el array 'codisPartidesNou' (de este modo codisPartides tendrá todas las partidas excepto la borrada)
+    if (partidaExisteix){ // Si 'partidaExisteix' es true, hemos eliminado correctamente la partida la cual hemos indicado su código de partida por parámetros
         console.log(`Partida amb codi ${req.params.codiPartida} eliminada correctament.`)
-        res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos
     }
+    res.send(codisPartides); // Mostramos las partidas que quedan al haber eliminado la partida que queriamos. En caso de no eliminar una partida ya que el código de partida no existe, se muestran de todos modos todas las partidas que existen actualmente
 });
 
 
