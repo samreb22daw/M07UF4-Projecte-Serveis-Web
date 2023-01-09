@@ -42,9 +42,25 @@ public class Api {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String consultarEstatPartida(@PathParam("codiPartida") int codiPartida) {
-        Partida temp = new Partida(codiPartida,"","",0,0);
-        int pos = codisPartides.indexOf(temp);
+        Partida partida = new Partida(codiPartida,"","",0,0);
+        int pos = codisPartides.indexOf(partida);
         return codisPartides.get(pos).toString();
+    }
+
+
+    // ELIMINAR UNA PARTIDA DEL ARRAY --> DELETE: Indicamos por parámetros de la URL el código de la partida que queremos eliminar
+    @Path("/acabarJoc/{codiPartida}")
+    @DELETE
+    @Produces(MediaType.TEXT_PLAIN)
+    public String acabarPartida(@PathParam("codiPartida") int codiPartida){
+        Partida partida = new Partida(codiPartida,"","",0,0);
+        int pos = codisPartides.indexOf(partida); // -1
+        if (pos == -1){
+            return "La partida que esteu intentant eliminar no existeix, per tant no es pot eliminar.";
+        }else{
+            codisPartides.remove(pos);
+            return "La partida s'ha eliminat correctament.";
+        }
     }
 
 }
