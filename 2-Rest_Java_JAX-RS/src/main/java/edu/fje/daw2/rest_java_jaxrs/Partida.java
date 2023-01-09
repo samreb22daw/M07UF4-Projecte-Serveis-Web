@@ -69,4 +69,13 @@ public class Partida {
                 ", guanyadesJugador2=" + guanyadesJugador2 +
                 '}';
     }
+
+    // Método equal
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Partida alumne = (Partida) o;
+        return gameCode == alumne.gameCode;
+    }
 }

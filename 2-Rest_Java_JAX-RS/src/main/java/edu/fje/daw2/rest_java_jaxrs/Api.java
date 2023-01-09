@@ -37,4 +37,14 @@ public class Api {
         return Response.status(200).entity("La partida s'ha creat correctament.").build();
     }
 
+    // CONSULTAR ESTADO DE LAS PARTIDAS --> GET: Indicamos en la URL el código de la partida que queremos consultar
+    @Path("/consultarEstatPartida/{codiPartida}")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String consultarEstatPartida(@PathParam("codiPartida") int codiPartida) {
+        Partida temp = new Partida(codiPartida,"","",0,0);
+        int pos = codisPartides.indexOf(temp);
+        return codisPartides.get(pos).toString();
+    }
+
 }

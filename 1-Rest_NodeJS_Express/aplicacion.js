@@ -48,7 +48,7 @@ app.get('/consultarEstatPartida/:codiPartida', (req, res) => {
         if (partida.gameCode === parseInt(req.params.codiPartida)) {  // Buscamos en el array "codisPartides" el valor del parámetro introducido en la URL
             let partidaActual = { gameCode: partida.gameCode, GuanyadesJugador1: partida.guanyadesJugador1, JugadaActualJugador1: partida.jugadaJugador1, GuanyadesJugador2: partida.guanyadesJugador2, JugadaActualJugador2: partida.jugadaJugador2, }; // Creamos un nuevo array que enseñaremos por pantalla mostrando las rondas ganadas de cada jugador, y la jugada actual de cada jugador
             console.log(`L'estat de la partida amb codi ${req.params.codiPartida} ha estat consultat.`);
-            res.send(partidaActual); // Mostramos "partidaActual"
+            res.send(partidaActual); // Mostramos "partidaActual", la cual tiene la información de la partida que se ha introducido por parámetros
         }
     })
 });
