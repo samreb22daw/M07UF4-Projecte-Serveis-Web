@@ -56,7 +56,7 @@ public class Api {
         Partida partida = new Partida(codiPartida,"","",0,0);
         int pos = codisPartides.indexOf(partida); // -1
         if (pos == -1){
-            return "La partida que esteu intentant eliminar no existeix, per tant no es pot eliminar.";
+            return "La partida que esteu intentant eliminar no existeix, per tant, no es pot eliminar.";
         }else{
             codisPartides.remove(pos);
             return "La partida s'ha eliminat correctament.";
