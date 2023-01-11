@@ -22,8 +22,8 @@ public class Api {
     @Path("/consultarServidor")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    public String consultarServidor() {
-        return "Servidor funcionant correctament!";
+    public Response consultarServidor() {
+        return Response.status(200).entity("Servidor funcionant correctament!").build();
     }
 
 
@@ -63,6 +63,37 @@ public class Api {
             return codisPartides.get(pos).toString();
         }
     }
+
+
+    // INDICAR EL NÚMERO DE JUGADOR Y LA JUGADA QUE SACA UN JUGADOR --> PUT: Indicamos el código de partida, el jugador que somos, y la jugada que vamos a sacar mediante parámetros en la URL
+    @Path("/moureJugador/{codiPartida}/{jugador}/{jugada}")
+    @PUT
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response moureJugador(@PathParam("codiPartida") int codiPartida, @PathParam("jugador") int jugador, @PathParam("jugada") String jugada){
+        // Primeramente, comprobamos si la partida a la que estamos indicando que jugador somos y la jugada que queremos sacar existe o no
+        Partida partida = new Partida(codiPartida,"","",0,0);
+        int pos = codisPartides.indexOf(partida);
+        if (pos != -1){ // Si 'pos' no es == -1, la partida existe, por tanto, podemos indicar el jugador que vamos a ser y la jugada que vamos a jugar en la partida
+            // Filtramos para que solo se pueda indicar que somos el jugador 1, o el jugador 2 (al ser un juego de 2 jugadores solo podemos sel el jugador 1 o el 2)
+            if (jugador == 1 || jugador == 2){
+                // Filtramos para que únicamente se pueda indicar una jugada disponible en el juego ('pedra', 'paper' o 'tisora')
+                if ()
+
+
+                return Response.status(200).entity("partida: "+codiPartida+" - jugador: "+jugador+" - jugada: "+jugada).build();
+            }else {
+                // Si 'jugador' es diferente a 1 o 2, indicamos por mensaje que solo se puede ser el jugador 1 o el 2
+                return Response.status(200).entity("El número de jugador que has introduït no està disponible. Indica si ets el jugador 1, o el jugador 2.").build();
+            }
+        }else {
+            // Si 'pos' no es != -1 (es decir, 'pos' == -1), la partida no existe, por tanto, indicamos por mensaje que la partida que se quiere jugar no existe
+            return Response.status(200).entity("La partida amb codi "+codiPartida+" no existeix. Introdueix un codi d'una partida existent per poder indicar quin jugador ets i la jugada que treus.").build();
+        }
+
+
+    }
+
 
 
     // ELIMINAR UNA PARTIDA DEL ARRAY --> DELETE: Indicamos por parámetros de la URL el código de la partida que queremos eliminar
