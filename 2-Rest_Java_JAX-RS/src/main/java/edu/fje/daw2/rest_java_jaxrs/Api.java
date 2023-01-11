@@ -33,18 +33,35 @@ public class Api {
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Produces(MediaType.TEXT_PLAIN)
     public Response iniciarJoc(@PathParam("gameCode") int gameCode){
-        codisPartides.add(new Partida(gameCode,"","",0,0));
-        return Response.status(200).entity("La partida s'ha creat correctament.").build();
+        // Primeramente, buscamos si la partida con el código de partida introducido por parámetros ya existe o no
+        Partida partida = new Partida(gameCode,"","",0,0);
+        int pos = codisPartides.indexOf(partida);
+        if (pos == -1){
+            // Si 'pos' == -1, quiere decir que la partida no existe en el array 'codisPartides', por tanto, creamos la partida con su código de partida en el array
+            codisPartides.add(new Partida(gameCode,"","",0,0));
+            return Response.status(200).entity("La partida amb codi "+gameCode+" ha estat creada correctament.").build();
+        }else {
+            // Si 'pos' no es == -1, quiere decir que la partida con el código de partida introducido por parámetros ya existe, por tanto, informamos al usuario
+            return Response.status(200).entity("La partida amb codi "+gameCode+" ja existeix. Introdueix un altre de codi de partida per crear una nova partida.").build();
+        }
     }
+
 
     // CONSULTAR ESTADO DE LAS PARTIDAS --> GET: Indicamos en la URL el código de la partida que queremos consultar
     @Path("/consultarEstatPartida/{codiPartida}")
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String consultarEstatPartida(@PathParam("codiPartida") int codiPartida) {
+        // Primeramente, buscamos si la partida con el código de partida introducido por parámetros que queremos consultar existe o no
         Partida partida = new Partida(codiPartida,"","",0,0);
         int pos = codisPartides.indexOf(partida);
-        return codisPartides.get(pos).toString();
+        if (pos == -1){
+            // Si 'pos' == -1, quiere decir que la partida no existe en el array 'codisPartides', por tanto, no se puede consultar la partida debido a que no existe
+            return "La partida amb codi "+codiPartida+" que vols consultar no existeix. Introdueix un codi d'una partida existent per consultar-la.";
+        }else {
+            // Si 'pos' no es == -1, quiere decir que la partida que se quiere consultar existe, por tanto, mostramos la información de la partida
+            return codisPartides.get(pos).toString();
+        }
     }
 
 
@@ -53,14 +70,16 @@ public class Api {
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
     public String acabarPartida(@PathParam("codiPartida") int codiPartida){
+        // Primeramente, buscamos si la partida con el código de partida introducido por parámetros que queremos eliminar existe o no
         Partida partida = new Partida(codiPartida,"","",0,0);
-        int pos = codisPartides.indexOf(partida); // -1
+        int pos = codisPartides.indexOf(partida);
         if (pos == -1){
-            return "La partida que esteu intentant eliminar no existeix, per tant, no es pot eliminar.";
+            // Si 'pos' == -1, quiere decir que la partida no existe en el array 'codisPartides', por tanto, no se puede eliminar la partida ya que no existe
+            return "La partida amb codi "+codiPartida+" que esteu intentant eliminar no existeix. Introdueix un codi d'una partida existent per poder eliminar-la.";
         }else{
+            // Si 'pos' no es == -1, quiere decir que la partida que se quiere eliminar existe, por tanto, eliminamos la partida del array de partidas
             codisPartides.remove(pos);
-            return "La partida s'ha eliminat correctament.";
+            return "La partida amb codi "+codiPartida+" ha sigut eliminada correctament.";
         }
     }
-
 }
