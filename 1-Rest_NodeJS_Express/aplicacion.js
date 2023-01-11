@@ -60,7 +60,7 @@ app.put('/moureJugador/:codiPartida/:jugador/:jugada', (req, res) => {
     codisPartides.forEach(function (partida) { // Miramos uno a uno los objetos de "codisPartides" con el bucle forEach
         if (partida.gameCode === parseInt(req.params.codiPartida)) { // Buscamos la partida con el codiPartida que hemos indicado en la URL
             if (req.params.jugador == 1 || req.params.jugador == 2) { // Filtramos para que solo se pueda indicar que somos el jugador 1 o el jugador 2
-                if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora') { // Filtramos para que únicamente se pueda indicar una jugada disponible ('pedra', 'paper' o 'tisora')
+                if (req.params.jugada == 'pedra' || req.params.jugada == 'paper' || req.params.jugada == 'tisora') { // Filtramos para que únicamente se pueda indicar una jugada de las disponibles en el juego ('pedra', 'paper' o 'tisora')
                     if (req.params.jugador == 1) { // Indicamos que jugador está realizando el movimiento y lo guardamos en el array "codisPartides" (jugador 1)
                         partida.jugadaJugador1 = req.params.jugada; // Cambiamos la jugada del jugador por la jugada que ha indicado (jugador 1)
                         console.log('El jugador 1 ha escollit jugada.');

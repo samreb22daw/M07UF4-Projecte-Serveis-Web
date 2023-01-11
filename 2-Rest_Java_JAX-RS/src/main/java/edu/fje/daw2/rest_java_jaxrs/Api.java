@@ -77,11 +77,22 @@ public class Api {
         if (pos != -1){ // Si 'pos' no es == -1, la partida existe, por tanto, podemos indicar el jugador que vamos a ser y la jugada que vamos a jugar en la partida
             // Filtramos para que solo se pueda indicar que somos el jugador 1, o el jugador 2 (al ser un juego de 2 jugadores solo podemos sel el jugador 1 o el 2)
             if (jugador == 1 || jugador == 2){
-                // Filtramos para que únicamente se pueda indicar una jugada disponible en el juego ('pedra', 'paper' o 'tisora')
-                if ()
-
-
-                return Response.status(200).entity("partida: "+codiPartida+" - jugador: "+jugador+" - jugada: "+jugada).build();
+                // Filtramos para que únicamente se pueda indicar una jugada de las disponibles en el juego ('pedra', 'paper' o 'tisora')
+                if (jugada.toLowerCase().equals("pedra") || jugada.toLowerCase().equals("paper") || jugada.toLowerCase().equals("tisora")){
+                    // Filtramos para comprobar que jugador hemos indicado ser, si el jugador 1, o el jugador 2
+                    if (jugador == 1){
+                        // En caso de que el jugador indique ser el jugador 1, asignamos a la jugada de este jugador ('jugadaJugador1') la jugada que ha indicado por parámetros
+                        codisPartides.get(pos).setJugadaJugador1(jugada.toLowerCase());
+                        return Response.status(200).entity("Ets el jugador "+jugador+" a la partida amb codi "+codiPartida+", i has seleccionat la jugada '"+jugada.toLowerCase()+"'.").build();
+                    }else {
+                        // En caso de que el jugador no sea el jugador 1 (entonces será el jugador 2), asignamos a la jugada de este jugador ('jugadaJugador2') la jugada que ha indicado por parámetros
+                        codisPartides.get(pos).setJugadaJugador2(jugada.toLowerCase());
+                        return Response.status(200).entity("Ets el jugador "+jugador+" a la partida amb codi "+codiPartida+", i has seleccionat la jugada '"+jugada.toLowerCase()+"'.").build();
+                    }
+                }else {
+                    // Si 'jugada' no es una de las jugadas disponibles ('pedra', 'paper' o 'tisora'), indicamos por mensaje que la jugada es incorrecta y esta tiene que ser una de las disponibles
+                    return Response.status(200).entity("La jugada que has introduït no és una jugada disponible. Has d'indicar una jugada entre 'pedra', 'paper' o 'tisora'.").build();
+                }
             }else {
                 // Si 'jugador' es diferente a 1 o 2, indicamos por mensaje que solo se puede ser el jugador 1 o el 2
                 return Response.status(200).entity("El número de jugador que has introduït no està disponible. Indica si ets el jugador 1, o el jugador 2.").build();
@@ -90,8 +101,6 @@ public class Api {
             // Si 'pos' no es != -1 (es decir, 'pos' == -1), la partida no existe, por tanto, indicamos por mensaje que la partida que se quiere jugar no existe
             return Response.status(200).entity("La partida amb codi "+codiPartida+" no existeix. Introdueix un codi d'una partida existent per poder indicar quin jugador ets i la jugada que treus.").build();
         }
-
-
     }
 
 
