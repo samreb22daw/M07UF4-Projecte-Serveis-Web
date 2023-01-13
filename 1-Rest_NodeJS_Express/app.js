@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos trabajar con URLs completas
 app.use(express.json()) // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs)
-
+app.use(express.static('public'));
 
 // Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores, sus victorias y el ganador de la partida
 let codisPartides = [
