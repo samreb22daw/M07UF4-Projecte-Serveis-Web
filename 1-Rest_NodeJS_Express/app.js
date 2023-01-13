@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos tr
 app.use(express.json()) // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs)
 
 
-// Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores y sus victorias
+// Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores, sus victorias y el ganador de la partida
 let codisPartides = [
 ];
 
@@ -41,7 +41,7 @@ app.post('/iniciarPartida/codiPartida/:gameCode', (req, res) => {
         console.log(`La partida amb codi ${req.params.gameCode} ja existeix. Per crear una nova partida s'ha d'introduir un codi no repetit.`);
     }else {
         // Si el código de la partida no existe (no está repetido), creamos la nueva partida con el código introducido por parámetros añadiéndolo al array "codisPartides"
-        codiNou = { gameCode: parseInt(req.params.gameCode), jugadaJugador1: '', jugadaJugador2: '', guanyadesJugador1: 0, guanyadesJugador2: 0 };
+        codiNou = { gameCode: parseInt(req.params.gameCode), guanyadesJugador1: 0, jugadaJugador1: '', guanyadesJugador2: 0, jugadaJugador2: '', guanyadorPartida: '' };
         codisPartides.push(codiNou); // Subimos al array "codisPartides" la nueva partida que se ha creado con el código que se ha introducido por parámetros
         // Finalmente, indicamos por mensaje que la partida ha sido creada correctamente.
         res.send(`La partida amb codi ${req.params.gameCode} ha estat creada correctament.`);
@@ -54,7 +54,7 @@ app.post('/iniciarPartida/codiPartida/:gameCode', (req, res) => {
 app.get('/consultarEstatPartida/:gameCode', (req, res) => {
     for (let partida of codisPartides){ // Miramos uno a uno los objetos de "codisPartides" con el bucle for
         if (partida.gameCode === parseInt(req.params.gameCode)){ // Buscamos en el array "codisPartides" el valor del parámetro introducido en la URL
-            let partidaConsultada = { gameCode: partida.gameCode, guanyadesJugador1: partida.guanyadesJugador1, jugadaJugador1: partida.jugadaJugador1, guanyadesJugador2: partida.guanyadesJugador2, jugadaJugador2: partida.jugadaJugador2, }; // Creamos un nuevo array que enseñaremos por pantalla mostrando las rondas ganadas de cada jugador, y la jugada actual de cada jugador
+            let partidaConsultada = { gameCode: partida.gameCode, guanyadesJugador1: partida.guanyadesJugador1, jugadaJugador1: partida.jugadaJugador1, guanyadesJugador2: partida.guanyadesJugador2, jugadaJugador2: partida.jugadaJugador2, guanyadorPartida: partida.guanyadorPartida }; // Creamos un nuevo array que enseñaremos por pantalla mostrando las rondas ganadas de cada jugador, y la jugada actual de cada jugador
             console.log(`L'estat de la partida amb codi ${req.params.gameCode} ha estat consultat.`);
             res.send(partidaConsultada); // Mostramos "partidaConsultada", la cual tiene la información de la partida que se ha introducido por parámetros, es decir, de la partida que se quiere consultar
         }
@@ -66,11 +66,17 @@ app.get('/consultarEstatPartida/:gameCode', (req, res) => {
 app.put('/moureJugador/:gameCode/:jugador/:jugada', (req, res) => {
     for (let partida of codisPartides){ // Miramos uno a uno los objetos de "codisPartides" con el bucle for
         if (partida.gameCode === parseInt(req.params.gameCode)){ // Buscamos la partida con el codiPartida que hemos indicado en la URL
-            if (partida.guanyadesJugador1 == 3 || partida.guanyadesJugador2 == 3){ // Comprobamos que ninguno de los jugadores haya ganado la partida, es decir, que ninguno de los jugadores haya ganado 3 turnos
-                // En caso de que alguno de los jugadores haya ganado la partida, se indica por mensaje que la partida ha finalizado y ya no se puede jugar más
-                res.end(`La partida amb codi ${req.params.gameCode} ha finalitzat, un jugador ha arribat a les 3 victòries. 
+            if (partida.guanyadesJugador1 == 3){ // Comprobamos que ninguno de los jugadores haya ganado la partida, es decir, que ninguno de los jugadores haya ganado 3 turnos
+                // Si el jugador 1 ha guanyat 3 torns, aquest jugador ha guanyat la partida, per tant, ho indiquem per un missatge
+                res.send(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 1 ha guanyat la partida, ha arribat a les 3 victòries.
                 Ja no pots llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
-                console.log(`La partida amb codi ${req.params.gameCode} ha finalitzat, un jugador ha arribat a les 3 victòries.
+                console.log(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 1 ha guanyat la partida, ha arribat a les 3 victòries.
+                Ja no es pot llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
+            }else if (partida.guanyadesJugador2 == 3){
+                // Si el jugador 2 ha guanyat 3 torns, aquest jugador ha guanyat la partida, per tant, ho indiquem per un missatge
+                res.send(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 2 ha guanyat la partida, ha arribat a les 3 victòries.
+                Ja no pots llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
+                console.log(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 2 ha guanyat la partida, ha arribat a les 3 victòries.
                 Ja no es pot llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
             }else { // En caso de que ningún jugador haya ganado la partida, seguimos con el proceso para lanzar movimientos
                 if (req.params.jugador == 1 || req.params.jugador == 2){ // Filtramos para que solo se pueda indicar que somos el jugador 1 o el jugador 2
@@ -103,6 +109,8 @@ app.put('/moureJugador/:gameCode/:jugador/:jugada', (req, res) => {
     }
 });
 
+
+// JUGAR LA PARTIDA ENTRE LOS DOS JUGADORES CON LOS MOVIMIENTOS QUE HAN ESCOGIDO --> PUT: Indicamos por parámetros de la URL la partida que queremos jugar, y enfrentamos los movimientos de los jugadores
 
 
 app.listen(3000, () => console.log('Inici del servidor.'));
