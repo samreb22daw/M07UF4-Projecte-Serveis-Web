@@ -27,7 +27,7 @@ public class Api {
     }
 
 
-    // INICIAR PARTIDA --> POST: Indicamos en la URL el código de la partida que queremos empezar
+    // INICIAR PARTIDA --> POST: Indicamos en la URL el código de la partida que queremos empezar y creamos la partida para comenzar a jugarla
     @Path("/iniciarJoc/codiPartida/{gameCode}")
     @POST
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -42,7 +42,7 @@ public class Api {
             return Response.status(200).entity("La partida amb codi "+gameCode+" ha estat creada correctament.").build();
         }else {
             // Si 'pos' no es == -1, quiere decir que la partida con el código de partida introducido por parámetros ya existe, por tanto, informamos al usuario
-            return Response.status(200).entity("La partida amb codi "+gameCode+" ja existeix. Introdueix un altre de codi de partida per crear una nova partida.").build();
+            return Response.status(200).entity("La partida amb codi "+gameCode+" ja existeix. Introdueix un altre codi de partida per crear una nova partida.").build();
         }
     }
 
