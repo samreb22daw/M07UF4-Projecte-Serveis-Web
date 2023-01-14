@@ -9,7 +9,7 @@ const express = require('express');
 const app = express();
 
 app.use(express.urlencoded({ extended: true })); // Quiere decir que queremos trabajar con URLs completas
-app.use(express.json()) // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs)
+app.use(express.json()); // Para analizar las peticiones HTTP que lleven JSON en el body o cuerpo (le indicamos que queremos trabajar con JSONs)
 app.use(express.static('public'));
 
 // Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores, sus victorias y el ganador de la partida
@@ -167,8 +167,8 @@ app.put('/jugarPartida/:gameCode', (req, res) => {
                     partida.jugadaJugador1 = '';
                     partida.jugadaJugador2 = '';
                 }else {
-                    res.send("El jugador 2 ha guanyat el torn");
-                    console.log("El jugador 2 ha guanyat el torn");
+                    res.send("El jugador 2 ha guanyat el torn.");
+                    console.log("El jugador 2 ha guanyat el torn.");
                     partida.jugadaJugador1 = '';
                     partida.jugadaJugador2 = '';
                 }
