@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Servidor</title>
+    <script type="text/javascript">
+
+        // ESTADO SERVIDOR
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+                document.getElementById("sConsultarServidor").innerHTML = `${this.responseText}`;
+            }
+        });
+
+        xhr.open("GET", "http://localhost:3000/consultarServidor");
+
+        xhr.send(null);
+        //----------------------------------------------------------
+
+        function crearPartida() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    document.getElementById("sCrearPartida").innerHTML = this.responseText;
+
+                }
+            });
+
+            xhr.open("POST", "http://localhost:3000/iniciarPartida/codiPartida/" + codiPartida.value);
+
+            xhr.send();
+        }
+
+        function consultarPartida() {
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    let jsonRes = JSON.parse(this.responseText)
+                    
+                    document.getElementById("title").innerHTML = "Estat de la partida amb codi: "+ jsonRes.gameCode;
+                    document.getElementById("sGuanyades1").innerHTML = jsonRes.tornsGuanyatsJugador1;
+                    document.getElementById("sGuanyades2").innerHTML = jsonRes.tornsGuanyatsJugador2;
+                }
+            });
+
+            xhr.open("GET", "http://localhost:3000/consultarEstatPartida/" + codiPartida.value);
+
+            xhr.send();
+        }
+    </script>
+</head>
+
+<body>
+    ESTAT DEL SERVIDOR<br>
+    <label id="sConsultarServidor"></label><br><br>
+
+    CREAR UNA PARTIDA:<br>
+    Indica el codi de partida que vols crear:
+    <input type="number" name="codiPartida" id="codiPartida" value="0" /><br />
+    <button onclick="crearPartida()">Crear partida</button><button onclick="consultarPartida()">Consultar partida</button><br>
+
+    <label id="sCrearPartida"></label>
+    <br>
+    <table id="taulaPartida" style="text-align: center;">
+        <tr><th id="title">Estat de la partida amb codi: </th></tr>
+        <tr><td style="padding-right: 10px;">Partides guanyades per el jugador 1</td><td>Partides guanyades per el jugador 2</td></tr>
+        <tr><td id="sGuanyades1"></td><td id="sGuanyades2"></td></tr>
+
+    </table>
+    
+
+</body>
+
+</html>
