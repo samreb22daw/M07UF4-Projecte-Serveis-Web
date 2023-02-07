@@ -2,7 +2,7 @@
     * Web service Rest con NodeJS/ExpressJS
     * Proyecto con Rest, NodeJS y ExpressJS para la recreación del juego "piedra, papel o tijera"
     * @authors 15585039.clot@fje.edu (Samuel Rebollo) | 15585072.clot@fje.edu (Xavier Aranda) 
-    * @version 1.0 03.10.22
+    * @version 1.0 03.10.22 (data començament)
 */
 
 const express = require('express');

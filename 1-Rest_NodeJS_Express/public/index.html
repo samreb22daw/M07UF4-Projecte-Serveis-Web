@@ -8,7 +8,7 @@
     <title>Consultar Servidor</title>
     <script type="text/javascript">
 
-        // ESTADO SERVIDOR
+        // CONSULTAR EL ESTADO SERVIDOR
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
 
@@ -22,8 +22,10 @@
         xhr.open("GET", "http://localhost:3000/consultarServidor");
 
         xhr.send(null);
-        //----------------------------------------------------------
 
+        // *****************************************************************************************
+        
+        // CREAR UNA NUEVA PARTIDA
         function crearPartida() {
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
@@ -38,9 +40,12 @@
 
             xhr.open("POST", "http://localhost:3000/iniciarPartida/codiPartida/" + codiPartida.value);
 
-            xhr.send();
+            xhr.send(null);
         }
 
+        // *****************************************************************************************
+
+        // CONSULTAR ESTAT PARTIDA
         function consultarPartida() {
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
@@ -58,7 +63,7 @@
 
             xhr.open("GET", "http://localhost:3000/consultarEstatPartida/" + codiPartida.value);
 
-            xhr.send();
+            xhr.send(null);
         }
     </script>
 </head>
