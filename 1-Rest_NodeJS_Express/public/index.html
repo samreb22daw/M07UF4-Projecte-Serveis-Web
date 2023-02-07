@@ -150,16 +150,28 @@
 
 <body>
     <div class="container">
-        <h3 class="text-primary" style="margin-top: 20px;">Joc del Pedra, Paper i Tisora</h3><br />
+        <h3 class="text-primary" style="margin-top: 20px; text-align: center;">Joc del Pedra, Paper i Tisora</h3><br />
+
         <!-- Consultar estat del servidor -->
         <label style="font-weight: bold;" class="text-primary">ESTAT DEL SERVIDOR: </label><br />
         <label id="estatServidor"></label><br /><br />
 
-        <!-- Crear / iniciar una nova partida -->
-        <label style="font-weight: bold;" class="text-primary">CREAR / INICIAR UNA NOVA PARTIDA: </label><br />
-        Introdueix el codi de partida de la partida que vols iniciar: <input type="number" name="gameCode" id="gameCode" value="0" ><br />
-        <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="iniciarPartida()">Iniciar partida</button><br />
-        <label id="partidaIniciada"></label><br /><br />
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <!-- Crear / iniciar una nova partida -->
+                <label style="font-weight: bold;" class="text-primary">CREAR / INICIAR UNA NOVA PARTIDA: </label><br />
+                Introdueix el codi de partida de la partida que vols iniciar: <input type="number" name="gameCode" id="gameCode" value="0" ><br />
+                <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="iniciarPartida()">Iniciar partida</button><br />
+                <label id="partidaIniciada"></label><br /><br />
+            </div>
+            <div>
+                <!-- Eliminar una partida -->
+                <label style="font-weight: bold;" class="text-primary">ELIMINAR UNA PARTIDA: </label><br />
+                Introdueix el codi de partida de la partida que vols eliminar: <input type="number" name="esborrarPartida" id="esborrarPartida" value="0" ><br />
+                <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="eliminarPartida()">Eliminar partida</button><br />
+                <label id="partidaEliminada"></label>
+            </div>
+        </div>
 
         <!-- Consultar l'estat d'una partida -->
         <label style="font-weight: bold;" class="text-primary">CONSULTAR ESTAT D'UNA PARTIDA: </label><br />
@@ -195,11 +207,6 @@
         <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="jugarPartida()">Jugar partida</button><br />
         <label id="partidaJugada"></label><br /><br />
 
-        <!-- Eliminar una partida -->
-        <label style="font-weight: bold;" class="text-primary">ELIMINAR UNA PARTIDA: </label><br />
-        Introdueix el codi de partida de la partida que vols eliminar: <input type="number" name="esborrarPartida" id="esborrarPartida" value="0" ><br />
-        <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="eliminarPartida()">Eliminar partida</button><br />
-        <label id="partidaEliminada"></label>
     </div>
 
 
