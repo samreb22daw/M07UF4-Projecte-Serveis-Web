@@ -2,6 +2,8 @@ const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 
+
+
 const partides = [
   /*{
     gameCode: 0,
@@ -130,7 +132,7 @@ const arrel = {
 };
 
 const app = express();
-app.use(express.static('public'))
+app.use(express.static('public'));
 app.use('/graphql', graphqlHTTP({
   schema: esquema,
   rootValue: arrel,
