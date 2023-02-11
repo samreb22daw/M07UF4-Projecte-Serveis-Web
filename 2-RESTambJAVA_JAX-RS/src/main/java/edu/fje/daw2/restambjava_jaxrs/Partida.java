@@ -71,14 +71,10 @@ public class Partida {
     // Método toString()
     @Override
     public String toString() {
-        return "Partida {" +
-                "gameCode=" + gameCode +
-                ", tornsGuanyatsJugador1=" + tornsGuanyatsJugador1 +
-                ", jugadaJugador1='" + jugadaJugador1 + '\'' +
-                ", tornsGuanyatsJugador2=" + tornsGuanyatsJugador2 +
-                ", jugadaJugador2='" + jugadaJugador2 + '\'' +
-                ", guanyadorPartida='" + guanyadorPartida + '\'' +
-                '}';
+        return "Partida amb codi: " + gameCode + " " +
+                " | Torns guanyats Jugador 1: " + tornsGuanyatsJugador1 + " " +
+                " | Torns guanyats Jugador 2: " + tornsGuanyatsJugador2 + " " +
+                " | Guanyador de la partida: '" + guanyadorPartida + "' ";
     }
 
     // Método equal

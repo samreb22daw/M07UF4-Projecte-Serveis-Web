@@ -13,8 +13,7 @@ app.use(express.json()); // Para analizar las peticiones HTTP que lleven JSON en
 app.use(express.static('public'));
 
 // Array de objetos (vacío por el momento), donde guardaremos las partidas, movimientos de los jugadores, sus victorias y el ganador de la partida
-let codisPartides = [
-];
+let codisPartides = [];
 
 
 // CONSULTAR FUNCIONAMIENTO DEL SERVIDOR --> GET: Consultamos que el servidor está funcionando
@@ -113,11 +112,11 @@ app.put('/jugarPartida/:gameCode', (req, res) => {
             eleccionJugador1 = partida.jugadaJugador1; // Asignamos la jugada del jugador 1 a una variable
             eleccionJugador2 = partida.jugadaJugador2; // Asignamos la jugada del jugador 2 a una variable
             if (partida.tornsGuanyatsJugador1 == 3){ // Primero, comprobamos que ningún jugador haya ganado la partida (haya llegado a las 3 victorias)
-                // Si el jugador 1 ha guanyat 3 torns, aquest jugador ha guanyat la partida, per tant, ho indiquem per un missatge
+                // Si el jugador 1 ha ganado tres turnos, quiere decir que ha ganado la partida, por tanto, lo mostramos mediante un mensaje
                 res.send(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 1 ha guanyat la partida, ha arribat a les 3 victòries. Ja no pots llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
                 console.log(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 1 ha guanyat la partida, ha arribat a les 3 victòries. Ja no es pot llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
             }else if (partida.tornsGuanyatsJugador2 == 3){
-                // Si el jugador 2 ha guanyat 3 torns, aquest jugador ha guanyat la partida, per tant, ho indiquem per un missatge
+                // Si el jugador 1 ha ganado tres turnos, quiere decir que ha ganado la partida, por tanto, lo mostramos mediante un mensaje
                 res.send(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 2 ha guanyat la partida, ha arribat a les 3 victòries. Ja no pots llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
                 console.log(`La partida amb codi ${req.params.gameCode} ha finalitzat. El jugador 2 ha guanyat la partida, ha arribat a les 3 victòries. Ja no es pot llançar moviments ni jugar més torns, però pots consultar el resultat de la partida.`);
             }else if (eleccionJugador1 == '' && eleccionJugador2 == ''){ // Comprobamos que los dos jugadores han indicado un movimiento. Si no han seleccionado movimiento los dos jugadores, no se puede jugar la partida
@@ -141,7 +140,7 @@ app.put('/jugarPartida/:gameCode', (req, res) => {
                 (eleccionJugador1 === 'paper' && eleccionJugador2 === 'pedra') ||
                 (eleccionJugador1 === 'tisora' && eleccionJugador2 === 'paper')
             ){
-                partida.tornsGuanyatsJugador1 += 1;// Si el jugador 1 ha ganado, sumamos al jugador 1 un turno ganado
+                partida.tornsGuanyatsJugador1 += 1; // Si el jugador 1 ha ganado, sumamos al jugador 1 un turno ganado
                 if (partida.tornsGuanyatsJugador1 == 3){ // Filtramos para saber si el jugador1 ha ganado el turno o la partida (gana la partida si ha ganado 3 rondas)
                     partida.guanyadorPartida = 'Jugador 1'; // Si el jugador 1 llega a 3 victorias, ha ganado la partida, por tanto asigno a "guanyadorPartida" que el ganador ha sido el jugador 1
                     res.send("EL JUGADOR 1 HA GUANYAT LA PARTIDA, AMB AQUEST TORN QUÈ HA GUANYAT, HA ARRIBAT A LES 3 VICTÒRIES. FELICITATS!");
