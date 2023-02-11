@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript">
+        // ---------- Consulta partides ------------
+
+        function consultaPartides() {
+            var data = JSON.stringify({
+                query: "query{\r\n    consultaPartides{\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    document.getElementById("sConsultaPartides").innerHTML = this.responseText;
+                }
+            });
+
+            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+
+        // --------------------------------------------------------------
+
+        //---------- CREAR PARTIDA -------------------------
+        function crearPartida() {
+            var data = JSON.stringify({
+                query: "mutation{\r\n    crearPartida(gameCode:" + document.getElementById("crearPartida").value + "){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    document.getElementById("sCrearPartida").innerHTML = this.responseText;
+                }
+            });
+
+            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+        // ----------------------------------------------------------------------
+
+        // -------------- CONSULTAR UNA PARTIDA ---------------------------------
+        function consultarPartida() {
+            var data = JSON.stringify({
+                query: "query{\r\n    consultaPartida(gameCode:" + document.getElementById("consultarPartida").value + "){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    document.getElementById("sConsultarPartida").innerHTML = this.responseText;
+                }
+            });
+
+            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+        // --------------------------------------------------------------------
+
+        // ---------------------------CAMBIAR JUGADA---------------------------
+        function cambiarJugada() {
+            var data = JSON.stringify({
+                query: "mutation{\r\n    cambiarJugada(gameCode:0,jugada"+ document.getElementById("jugador").value +":"+ document.getElementById("jugadaEscollida").value +"){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function () {
+                if (this.readyState === 4) {
+                    console.log(this.responseText);
+                    document.getElementById("sCambiarJugada").innerHTML = this.responseText;
+
+                }
+            });
+
+            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+        // --------------------------------------------------------------------
+    </script>
+</head>
+
+<body>
+    CREAR PARTIDA: <br>
+    GameCode: <input type="number" name="crearPartida" id="crearPartida" value=0>
+    <button onclick="crearPartida()">Crear partida</button><br>
+    <label id="sCrearPartida"></label><br><br>
+
+    CONSULTA PARTIDES: <br>
+    <button onclick="consultaPartides()">Consultar totes les partides</button><br>
+    <label id="sConsultaPartides"></label><br><br>
+
+    CONSULTA UNA PARTIDA: <br>
+    GameCode: <input type="number" name="consultarPartida" id="consultarPartida" value=0>
+    <button onclick="consultarPartida()">Consultar partida</button><br>
+    <label id="sConsultarPartida"></label><br><br>
+
+    CAMBIAR JUGADA: <br>
+    GameCode: <input type="number" name="codiPartida" id="codiPartida" value=0><br>
+    Jugador: <input type="number" name="jugador" id="jugador" value=0><br>
+    <select id="jugadaEscollida" name="jugadaEscollida">
+        <option value="pedra">Pedra</option>
+        <option value="paper">Paper</option>
+        <option value="tisora">Tisores</option>
+    </select><br>
+    <button onclick="cambiarJugada()">Fer moviment</button><br>
+    <label id="sCambiarJugada"></label><br><br>
+
+
+
+</body>
+
+</html>
