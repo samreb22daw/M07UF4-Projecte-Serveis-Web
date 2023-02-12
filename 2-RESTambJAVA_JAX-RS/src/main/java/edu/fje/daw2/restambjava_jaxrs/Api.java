@@ -138,7 +138,7 @@ public class Api {
                 a sacar, del mismo modo que el juego original */
                 codisPartides.get(pos).setJugadaJugador1("");
                 codisPartides.get(pos).setJugadaJugador2("");
-                return Response.status(200).entity("Els jugados han empatat el torn, han tret la mateixa jugada.").build();
+                return Response.status(200).entity("Els jugados han empatat el torn, han tret la mateixa jugada. (Jugada Jugador 1: "+eleccionJugador1+" | Jugada Jugador 2: "+eleccionJugador2+")").build();
             }else if ((eleccionJugador1.equals("pedra") && eleccionJugador2.equals("tisora")) || (eleccionJugador1.equals("paper") && eleccionJugador2.equals("pedra")) || (eleccionJugador1.equals("tisora") && eleccionJugador2.equals("paper"))){
                 // Si el jugador 1 ha ganado, sumamos al jugador 1 un turno ganado
                 guanyatsJugador1 += 1;
@@ -150,11 +150,11 @@ public class Api {
                     a sacar, del mismo modo que el juego original */
                     codisPartides.get(pos).setJugadaJugador1("");
                     codisPartides.get(pos).setJugadaJugador2("");
-                    return Response.status(200).entity("EL JUGADOR 1 HA GUANYAT LA PARTIDA, AMB AQUEST TORN QUÈ HA GUANYAT, HA ARRIBAT A LES 3 VICTÒRIES. FELICITATS!.").build();
+                    return Response.status(200).entity("EL JUGADOR 1 HA GUANYAT LA PARTIDA, AMB AQUEST TORN QUÈ HA GUANYAT, HA ARRIBAT A LES 3 VICTÒRIES. FELICITATS!. (Jugada Jugador 1: "+eleccionJugador1+" | Jugada Jugador 2: "+eleccionJugador2+")").build();
                 }else {
                     codisPartides.get(pos).setJugadaJugador1("");
                     codisPartides.get(pos).setJugadaJugador2("");
-                    return Response.status(200).entity("El jugador 1 ha guanyat el torn.").build();
+                    return Response.status(200).entity("El jugador 1 ha guanyat el torn. (Jugada Jugador 1: "+eleccionJugador1+" | Jugada Jugador 2: "+eleccionJugador2+")").build();
                 }
             }else {
                 // Si el jugador 1 no ha ganado, quiere decir que ha ganado el jugador 2, es por ello que le sumamos el turno ganado al jugador 2
@@ -167,11 +167,11 @@ public class Api {
                     a sacar, del mismo modo que el juego original */
                     codisPartides.get(pos).setJugadaJugador1("");
                     codisPartides.get(pos).setJugadaJugador2("");
-                    return Response.status(200).entity("EL JUGADOR 2 HA GUANYAT LA PARTIDA, AMB AQUEST TORN QUÈ HA GUANYAT, HA ARRIBAT A LES 3 VICTÒRIES. FELICITATS!.").build();
+                    return Response.status(200).entity("EL JUGADOR 2 HA GUANYAT LA PARTIDA, AMB AQUEST TORN QUÈ HA GUANYAT, HA ARRIBAT A LES 3 VICTÒRIES. FELICITATS!. (Jugada Jugador 1: "+eleccionJugador1+" | Jugada Jugador 2: "+eleccionJugador2+")").build();
                 }else {
                     codisPartides.get(pos).setJugadaJugador1("");
                     codisPartides.get(pos).setJugadaJugador2("");
-                    return Response.status(200).entity("El jugador 2 ha guanyat el torn.").build();
+                    return Response.status(200).entity("El jugador 2 ha guanyat el torn. (Jugada Jugador 1: "+eleccionJugador1+" | Jugada Jugador 2: "+eleccionJugador2+")").build();
                 }
             }
         }else {
