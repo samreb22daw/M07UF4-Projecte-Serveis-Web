@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pedra, paper i tisora</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script type="text/javascript">
 
         // CONSULTAR EL ESTADO SERVIDOR:
@@ -46,31 +44,13 @@
         
         // CONSULTAR ESTADO DE UNA PARTIDA
         function consultarPartida() {
-
-            // Primeramente, igualamos a nada a los #id que mostrarán información sobre el estado de la partida
-            document.getElementById('partidaConsultada').innerHTML = ``;
-            document.getElementById('tornsGuanyatsJug1').innerHTML = ``;
-            document.getElementById('tornsGuanyatsJug2').innerHTML = ``;
-            document.getElementById('guanyadorPartida').innerHTML = ``;
-
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
             xhr.addEventListener("readystatechange", function() {
                 if(this.readyState === 4) {
                     console.log(this.responseText);
-                    // Pasamos la respuesta en forma de JSON que recibimos a un JSON como objeto JavaScript con "parse"
-                    let respostaJSON = JSON.parse(this.responseText);
-
-                    document.getElementById('partidaConsultada').innerHTML = `${respostaJSON.gameCode}`;
-                    document.getElementById('tornsGuanyatsJug1').innerHTML = `${respostaJSON.tornsGuanyatsJugador1}`;
-                    document.getElementById('tornsGuanyatsJug2').innerHTML = `${respostaJSON.tornsGuanyatsJugador2}`;
-                    if (respostaJSON.guanyadorPartida == 'Jugador 1' || respostaJSON.guanyadorPartida == 'Jugador 2'){
-                        document.getElementById('guanyadorPartida').innerHTML = `${respostaJSON.guanyadorPartida}`;
-                    }else {
-                        document.getElementById('guanyadorPartida').innerHTML = `Encara no hi ha guanyador`;
-                    }
-                    
+                    document.getElementById('partidaConsultada').innerHTML = this.responseText;
                 }
             });
 
@@ -82,9 +62,6 @@
 
         // ESCOGER JUGADA Y EL JUGADOR QUE VAMOS A SER EN UNA PARTIDA DE LAS DISPONIBLES
         function escollirJugada() {
-
-            document.getElementById('jugadaSeleccionada').innerHTML = ``;
-
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
@@ -108,9 +85,6 @@
 
         // JUGAR UNA PARTIDA DISPONIBLE Y ENFRENTAR LAS JUGADAS DE LOS 2 JUGADORES
         function jugarPartida(){
-
-            document.getElementById('partidaJugada').innerHTML = ``;
-
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
@@ -145,16 +119,28 @@
         }
         // *************************************************************************************
 
+        // FUNCIÓN PARA LIMPIAR LOS DATOS DE LA PANTALLA
+        function netejarDades(){
+            // Esta función iguala a nada todos los mensajes que se muestran en la interfaz, para de este modo limpiar los datos (todos los mensajes)
+            document.getElementById("partidaIniciada").innerHTML = '';
+            document.getElementById('partidaConsultada').innerHTML = '';
+            document.getElementById('jugadaSeleccionada').innerHTML = '';
+            document.getElementById('partidaJugada').innerHTML = '';
+            document.getElementById('partidaEliminada').innerHTML = '';
+            console.log("Dades netejades.");
+        }
+        // *************************************************************************************
+
     </script>
 </head>
-
 <body>
+
     <div class="container">
         <h3 class="text-primary" style="margin-top: 20px; text-align: center;">Joc del Pedra, Paper i Tisora</h3><br />
 
         <!-- Consultar estat del servidor -->
         <label style="font-weight: bold;" class="text-primary">ESTAT DEL SERVIDOR: </label><br />
-        <label id="estatServidor"></label><br /><br />
+        <label style="font-weight: bold" id="estatServidor"></label><br /><br />
 
         <div style="display: flex; justify-content: space-between;">
             <div>
@@ -162,14 +148,14 @@
                 <label style="font-weight: bold;" class="text-primary">CREAR / INICIAR UNA NOVA PARTIDA: </label><br />
                 Introdueix el codi de partida de la partida que vols iniciar: <input type="number" name="gameCode" id="gameCode" value="0" ><br />
                 <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="iniciarPartida()">Iniciar partida</button><br />
-                <label id="partidaIniciada"></label><br /><br />
+                <label style="font-weight: bold" id="partidaIniciada"></label><br /><br />
             </div>
             <div>
                 <!-- Eliminar una partida -->
                 <label style="font-weight: bold;" class="text-primary">ELIMINAR UNA PARTIDA: </label><br />
                 Introdueix el codi de partida de la partida que vols eliminar: <input type="number" name="esborrarPartida" id="esborrarPartida" value="0" ><br />
                 <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="eliminarPartida()">Eliminar partida</button><br />
-                <label id="partidaEliminada"></label>
+                <label style="font-weight: bold" id="partidaEliminada"></label><br /><br />
             </div>
         </div>
 
@@ -178,14 +164,7 @@
         Introdueix el codi de partida de la partida que vols consultar: <input type="number" name="consultarGameCode" id="consultarGameCode" value="0" ><br />
         <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="consultarPartida()">Consultar partida</button><br />
         <div>
-            <label style="font-weight: bold;">Estat de la partida amb codi: </label>
-            <label id="partidaConsultada"></label><br />
-            <label style="font-weight: bold;">Torns guanyats jugador 1: </label>
-            <label id="tornsGuanyatsJug1"></label><br />
-            <label style="font-weight: bold;">Torns guanyats jugador 2: </label>
-            <label id="tornsGuanyatsJug2"></label><br />
-            <label style="font-weight: bold;">Guanyador de la partida: </label>
-            <label id="guanyadorPartida"></label><br /><br />
+            <label style="font-weight: bold" id="partidaConsultada"></label><br /><br />
         </div>
 
         <!-- Indicar el jugador i la jugada que treu un jugador a una partida -->
@@ -199,17 +178,16 @@
             <option value="tisora">Tisora</option>
         </select><br />
         <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="escollirJugada()">Escollir jugada</button><br />
-        <label id="jugadaSeleccionada"></label><br /><br />
+        <label style="font-weight: bold" id="jugadaSeleccionada"></label><br /><br />
 
         <!-- Jugar un torn a una partida en concret amb les jugades seleccionades pels jugadors -->
         <label style="font-weight: bold;" class="text-primary">JUGAR PARTIDA: </label><br />
         Introdueix el codi de partida de la partida que vols jugar: <input type="number" name="jugarCodiPartida" id="jugarCodiPartida" value="0" ><br />
         <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="jugarPartida()">Jugar partida</button><br />
-        <label id="partidaJugada"></label><br /><br />
-
+        <label style="font-weight: bold" id="partidaJugada"></label><br /><br />
+        <button type="button" class="btn btn-info" style="display: block; margin: auto;" onclick="netejarDades()">Netejar dades</button><br />
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-</body>
 
+</body>
 </html>

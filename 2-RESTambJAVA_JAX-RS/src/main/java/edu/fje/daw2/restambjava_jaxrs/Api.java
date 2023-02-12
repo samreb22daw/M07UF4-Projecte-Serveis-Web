@@ -1,5 +1,12 @@
 package edu.fje.daw2.restambjava_jaxrs;
 
+/*
+ * Web Service REST con JAX-RS
+ * Proyecto REST con JAX-RS para la recreación del juego "piedra, papel o tijera"
+ * @authors 15585039.clot@fje.edu (Samuel Rebollo) | 15585072.clot@fje.edu (Xavier Aranda)
+ * @version 1.0 09.01.23 (data començament)
+ */
+
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;

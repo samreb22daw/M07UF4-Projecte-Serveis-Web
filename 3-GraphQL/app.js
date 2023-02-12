@@ -1,5 +1,5 @@
 /* 
-    * Web Service amb GraphQL
+    * Web Service con GraphQL
     * Proyecto con GraphQL para la recreación del juego "piedra, papel o tijera"
     * @authors 15585039.clot@fje.edu (Samuel Rebollo) | 15585072.clot@fje.edu (Xavier Aranda) 
     * @version 1.0 09.02.23 (data començament)
@@ -211,7 +211,7 @@ const arrel = {
     // ELIMINAMOS UNA PARTIDA EXISTENTE
     esborrarPartida: ({gameCode}) => {
       // Bucamos la posición de la partida que queremos eliminar en el Array 'partides'
-      index = partides.findIndex(partida => partida.gameCode == gameCode);
+      let index = partides.findIndex(partida => partida.gameCode == gameCode);
       if (index == -1){
         // Si index == -1, indicamos por mensaje en la consola que la partida no existe y por tanto no se puede eliminar
         console.log(`La partida amb codi ${gameCode} no existeix, per tant, no por ser esborrada.`);
