@@ -7,6 +7,8 @@
     <title>Pedra, Paper i Tisora</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script type="text/javascript">
+        // VARIABLE CON LA IP DEL SERVIDOR
+        let ip = '172.20.17.170'; // Cambiar esta variable dependiendo de la IP que tiene el servidor cuando se inicia (en un servidor real sería siempre la misma IP)
 
         // CONSULTAR EL ESTADO SERVIDOR:
         var xhr = new XMLHttpRequest();
@@ -19,7 +21,7 @@
             }
         });
 
-        xhr.open("GET", "http://172.20.17.170:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarServidor");
+        xhr.open("GET", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarServidor");
 
         xhr.send(null);
         // *************************************************************************************
@@ -36,7 +38,7 @@
                 }
             });
 
-            xhr.open("POST", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/iniciarPartida/codiPartida/" + document.getElementById('gameCode').value);
+            xhr.open("POST", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/iniciarPartida/codiPartida/" + document.getElementById('gameCode').value);
 
             xhr.send(null);
         }
@@ -54,7 +56,7 @@
                 }
             });
 
-            xhr.open("GET", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarEstatPartida/" + document.getElementById('consultarGameCode').value);
+            xhr.open("GET", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarEstatPartida/" + document.getElementById('consultarGameCode').value);
 
             xhr.send(null);
         }
@@ -77,7 +79,7 @@
             let jugador = document.getElementById('escollirJugador').value;
             let juagada = document.getElementById('jugadaEscollida').value;
 
-            xhr.open("PUT", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/moureJugador/" + gameCode + "/" + jugador + "/" + juagada );
+            xhr.open("PUT", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/moureJugador/" + gameCode + "/" + jugador + "/" + juagada );
 
             xhr.send(null);
         }
@@ -95,7 +97,7 @@
                 }
             });
 
-            xhr.open("PUT", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/jugarPartida/" + document.getElementById('jugarCodiPartida').value);
+            xhr.open("PUT", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/jugarPartida/" + document.getElementById('jugarCodiPartida').value);
 
             xhr.send(null);
         }
@@ -113,7 +115,7 @@
                 }
             });
 
-            xhr.open("DELETE", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/acabarPartida/" + document.getElementById('esborrarPartida').value);
+            xhr.open("DELETE", "http://"+ip+":8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/acabarPartida/" + document.getElementById('esborrarPartida').value);
 
             xhr.send(null);
         }
