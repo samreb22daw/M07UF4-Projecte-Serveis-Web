@@ -7,7 +7,8 @@
     <title>Pedra, paper i tisora</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script type="text/javascript">
-
+        // VARIABLE CON LA IP DEL SERVIDOR
+        let ip = '172.20.17.170';
         // CONSULTAR EL ESTADO SERVIDOR:
         var xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
@@ -19,7 +20,7 @@
             }
         });
 
-        xhr.open("GET", "http://localhost:3000/consultarServidor");
+        xhr.open("GET", `http://${ip}:3000/consultarServidor`);
 
         xhr.send(null);
         // *************************************************************************************
@@ -36,7 +37,7 @@
                 }
             });
 
-            xhr.open("POST", "http://localhost:3000/iniciarPartida/codiPartida/" + document.getElementById('gameCode').value);
+            xhr.open("POST", `http://${ip}:3000/iniciarPartida/codiPartida/` + document.getElementById('gameCode').value);
 
             xhr.send(null);
         }
@@ -54,7 +55,7 @@
                 }
             });
 
-            xhr.open("GET", "http://localhost:3000/consultarEstatPartida/" + document.getElementById('consultarGameCode').value);
+            xhr.open("GET", `http://${ip}:3000/consultarEstatPartida/` + document.getElementById('consultarGameCode').value);
 
             xhr.send(null);
         }
@@ -75,9 +76,9 @@
             // Creamos una variables para almacenar el valor de los valores recogidos en ellas
             let gameCode = document.getElementById('escollirGameCode').value;
             let jugador = document.getElementById('escollirJugador').value;
-            let juagada = document.getElementById('jugadaEscollida').value;
+            let jugada = document.getElementById('jugadaEscollida').value;
 
-            xhr.open("PUT", "http://localhost:3000/moureJugador/" + gameCode + "/" + jugador + "/" + juagada );
+            xhr.open("PUT", `http://${ip}:3000/moureJugador/`+ gameCode + "/" + jugador + "/" + jugada);
 
             xhr.send(null);
         }
@@ -95,7 +96,7 @@
                 }
             });
 
-            xhr.open("PUT", "http://localhost:3000/jugarPartida/" + document.getElementById('jugarCodiPartida').value);
+            xhr.open("PUT", `http://${ip}:3000/jugarPartida/`+ document.getElementById('jugarCodiPartida').value);
 
             xhr.send(null);
         }
@@ -113,7 +114,7 @@
                 }
             });
 
-            xhr.open("DELETE", "http://localhost:3000/acabarPartida/" + document.getElementById('esborrarPartida').value);
+            xhr.open("DELETE", `http://${ip}:3000/acabarPartida/`+ document.getElementById('esborrarPartida').value);
 
             xhr.send(null);
         }

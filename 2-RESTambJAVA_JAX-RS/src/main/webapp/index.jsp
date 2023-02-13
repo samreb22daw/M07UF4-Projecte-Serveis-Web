@@ -19,7 +19,7 @@
             }
         });
 
-        xhr.open("GET", "http://localhost:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarServidor");
+        xhr.open("GET", "http://172.20.17.170:8080/2_RESTambJAVA_JAX_RS_war_exploded/api/daw2/consultarServidor");
 
         xhr.send(null);
         // *************************************************************************************
