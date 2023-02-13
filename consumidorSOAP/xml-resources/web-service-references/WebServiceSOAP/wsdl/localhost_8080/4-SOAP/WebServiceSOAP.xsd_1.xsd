@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.4.0 (wsit240-7e98ff4; 2017-08-03T21:19:54+0200) JAXWS-RI/2.3.0 JAXWS-API/2.3.0 JAXB-RI/2.3.0 JAXB-API/2.3.0 svn-revision#unknown. --><xs:schema xmlns:tns="http://daw2/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://daw2/">
+
+<xs:element name="acabarPartida" type="tns:acabarPartida"/>
+
+<xs:element name="acabarPartidaResponse" type="tns:acabarPartidaResponse"/>
+
+<xs:element name="consultarEstatPartida" type="tns:consultarEstatPartida"/>
+
+<xs:element name="consultarEstatPartidaResponse" type="tns:consultarEstatPartidaResponse"/>
+
+<xs:element name="consultarServidor" type="tns:consultarServidor"/>
+
+<xs:element name="consultarServidorResponse" type="tns:consultarServidorResponse"/>
+
+<xs:element name="iniciarPartida" type="tns:iniciarPartida"/>
+
+<xs:element name="iniciarPartidaResponse" type="tns:iniciarPartidaResponse"/>
+
+<xs:element name="jugarPartida" type="tns:jugarPartida"/>
+
+<xs:element name="jugarPartidaResponse" type="tns:jugarPartidaResponse"/>
+
+<xs:element name="moureJugador" type="tns:moureJugador"/>
+
+<xs:element name="moureJugadorResponse" type="tns:moureJugadorResponse"/>
+
+<xs:complexType name="jugarPartida">
+<xs:sequence>
+<xs:element name="gameCode" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="jugarPartidaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acabarPartida">
+<xs:sequence>
+<xs:element name="gameCode" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="acabarPartidaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarServidor">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="consultarServidorResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarEstatPartida">
+<xs:sequence>
+<xs:element name="gameCode" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="consultarEstatPartidaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="moureJugador">
+<xs:sequence>
+<xs:element name="gameCode" type="xs:int"/>
+<xs:element name="jugador" type="xs:int"/>
+<xs:element name="jugada" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="moureJugadorResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="iniciarPartida">
+<xs:sequence>
+<xs:element name="gameCode" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="iniciarPartidaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>
