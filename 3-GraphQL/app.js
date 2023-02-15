@@ -223,7 +223,8 @@ const arrel = {
         return null;
       }else {
         // Si la partida que queremos eliminar existe, la eliminamos del Array 
-        delete partides[index];
+        partides.splice(index,1);
+        
         console.log(`La partida amb codi ${gameCode} ha sigut esborrada correctament.`);
         return partides;
       }
