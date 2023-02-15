@@ -34,6 +34,7 @@ type Partida {
 type Query {
   consultaPartides: [Partida]
   consultaPartida(gameCode: ID!): Partida
+  consultaServidor: String
 }
 
 type Mutation {
@@ -53,6 +54,10 @@ const arrel = {
       console.log(`Partides disponibles:`);
       console.log(partides);
       return partides;
+    },
+
+    consultaServidor: () => {
+      return "El servidor funciona correctament"
     },
 
 
