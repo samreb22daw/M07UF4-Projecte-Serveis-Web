@@ -58,7 +58,7 @@
         }
         // *************************************************************************************
         
-        // CONSULTAR ESTADO DE UNA PARTIDA
+        // CONSULTAR EL ESTADO DE UNA PARTIDA
         function consultarPartida() {
             var data = JSON.stringify({
                 query: "query{\r\n    consultaPartida(gameCode:" + document.getElementById('consultarGameCode').value + "){\r\n        gameCode\r\n        tornsGuanyats1\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
