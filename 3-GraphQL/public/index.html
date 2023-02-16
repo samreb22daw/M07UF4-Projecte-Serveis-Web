@@ -1,141 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Pedra, paper i tisora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script type="text/javascript">
-        // ---------- Consulta partides ------------
+        // VARIABLE CON LA IP DEL SERVIDOR
+        let ip = '192.168.1.53'; // Cambiar esta variable dependiendo de la IP que tiene el servidor cuando se inicia (en un servidor real sería siempre la misma IP)
 
-        function consultaPartides() {
+        // CONSULTAR EL ESTADO SERVIDOR:
+        var data = JSON.stringify({
+            query: "query{\r\n    consultaServidor\r\n}",
+            variables: {}
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function() {
+            if(this.readyState === 4) {
+                missatgeJSON = JSON.parse(this.responseText);
+                console.log(this.responseText);
+                document.getElementById('estatServidor').innerHTML = missatgeJSON.data.consultaServidor;
+            }
+        });
+
+        xhr.open("POST", `http://${ip}:4000/graphql`);
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.send(data);
+        // *************************************************************************************
+
+        // CREAR / INICIAR UNA NUEVA PARTIDA:
+        function iniciarPartida() {
             var data = JSON.stringify({
-                query: "query{\r\n    consultaPartides{\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                query: "mutation{\r\n    crearPartida(gameCode:"+ document.getElementById("gameCode").value + ")\r\n}",
                 variables: {}
             });
 
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    missatgeJSON = JSON.parse(this.responseText);
                     console.log(this.responseText);
-                    document.getElementById("sConsultaPartides").innerHTML = this.responseText;
+                    document.getElementById('partidaIniciada').innerHTML = missatgeJSON.data.crearPartida;
                 }
             });
 
-            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.open("POST", `http://${ip}:4000/graphql`);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.send(data);
         }
-
-        // --------------------------------------------------------------
-
-        //---------- CREAR PARTIDA -------------------------
-        function crearPartida() {
-            var data = JSON.stringify({
-                query: "mutation{\r\n    crearPartida(gameCode:" + document.getElementById("crearPartida").value + "){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
-                variables: {}
-            });
-
-            var xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
-                    console.log(this.responseText);
-                    document.getElementById("sCrearPartida").innerHTML = this.responseText;
-                }
-            });
-
-            xhr.open("POST", "http://localhost:4000/graphql");
-            xhr.setRequestHeader("Content-Type", "application/json");
-
-            xhr.send(data);
-        }
-        // ----------------------------------------------------------------------
-
-        // -------------- CONSULTAR UNA PARTIDA ---------------------------------
+        // *************************************************************************************
+        
+        // CONSULTAR ESTADO DE UNA PARTIDA
         function consultarPartida() {
             var data = JSON.stringify({
-                query: "query{\r\n    consultaPartida(gameCode:" + document.getElementById("consultarPartida").value + "){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                query: "query{\r\n    consultaPartida(gameCode:" + document.getElementById('consultarGameCode').value + "){\r\n        gameCode\r\n        tornsGuanyats1\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
                 variables: {}
             });
 
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    missatgeJSON = JSON.parse(this.responseText);
                     console.log(this.responseText);
-                    document.getElementById("sConsultarPartida").innerHTML = this.responseText;
+                    document.getElementById('partidaConsultada').innerHTML = this.responseText;
                 }
             });
 
-            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.open("POST", `http://${ip}:4000/graphql`);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.send(data);
         }
-        // --------------------------------------------------------------------
+        // *************************************************************************************
 
-        // ---------------------------CAMBIAR JUGADA---------------------------
-        function cambiarJugada() {
+        // ESCOGER JUGADA Y EL JUGADOR QUE VAMOS A SER EN UNA PARTIDA DE LAS DISPONIBLES
+        function escollirJugada() {
             var data = JSON.stringify({
-                query: "mutation{\r\n    cambiarJugada(gameCode:0,jugada"+ document.getElementById("jugador").value +":"+ document.getElementById("jugadaEscollida").value +"){\r\n        gameCode\r\n        jugada1\r\n        tornsGuanyats1\r\n        jugada2\r\n        tornsGuanyats2\r\n        guanyadorPartida\r\n    }\r\n}",
+                query: "mutation{\r\n    moureJugador(gameCode:" + document.getElementById('escollirGameCode').value + ", jugada"+ document.getElementById("jugadorEscollit").value +":"+ document.getElementById("jugadaEscollida").value +")\r\n}",
                 variables: {}
             });
 
             var xhr = new XMLHttpRequest();
             xhr.withCredentials = true;
 
-            xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === 4) {
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    missatgeJSON = JSON.parse(this.responseText);
                     console.log(this.responseText);
-                    document.getElementById("sCambiarJugada").innerHTML = this.responseText;
-
+                    document.getElementById('jugadaSeleccionada').innerHTML = missatgeJSON.data.moureJugador;
                 }
             });
 
-            xhr.open("POST", "http://localhost:4000/graphql");
+            xhr.open("POST", `http://${ip}:4000/graphql`);
             xhr.setRequestHeader("Content-Type", "application/json");
 
             xhr.send(data);
         }
-        // --------------------------------------------------------------------
+        // *************************************************************************************
+
+        // JUGAR UNA PARTIDA DISPONIBLE Y ENFRENTAR LAS JUGADAS DE LOS 2 JUGADORES
+        function jugarPartida(){
+            var data = JSON.stringify({
+                query: "mutation{\r\n    jugarPartida(gameCode:" + document.getElementById('jugarCodiPartida').value + ")\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    missatgeJSON = JSON.parse(this.responseText);
+                    console.log(this.responseText);
+                    document.getElementById('partidaJugada').innerHTML = missatgeJSON.data.jugarPartida;
+                }
+            });
+
+            xhr.open("POST", `http://${ip}:4000/graphql`);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+        // *************************************************************************************
+
+        // ELIMINAR UNA PARTIDA
+        function eliminarPartida(){
+            var data = JSON.stringify({
+                query: "mutation{\r\n    esborrarPartida(gameCode:" + document.getElementById('esborrarPartida').value + ")\r\n}",
+                variables: {}
+            });
+
+            var xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    missatgeJSON = JSON.parse(this.responseText);
+                    console.log(this.responseText);
+                    document.getElementById('partidaEliminada').innerHTML = missatgeJSON.data.esborrarPartida;
+                }
+            });
+
+            xhr.open("POST", `http://${ip}:4000/graphql`);
+            xhr.setRequestHeader("Content-Type", "application/json");
+
+            xhr.send(data);
+        }
+        // *************************************************************************************
+        
+        // FUNCIÓN PARA LIMPIAR LOS DATOS DE LA PANTALLA
+        function netejarDades(){
+            // Esta función iguala a nada todos los mensajes que se muestran en la interfaz, para de este modo limpiar los datos (todos los mensajes)
+            document.getElementById("partidaIniciada").innerHTML = '';
+            document.getElementById('partidaConsultada').innerHTML = '';
+            document.getElementById('jugadaSeleccionada').innerHTML = '';
+            document.getElementById('partidaJugada').innerHTML = '';
+            document.getElementById('partidaEliminada').innerHTML = '';
+            console.log("Dades netejades.");
+        }
+        // *************************************************************************************
+
     </script>
 </head>
-
 <body>
-    CREAR PARTIDA: <br>
-    GameCode: <input type="number" name="crearPartida" id="crearPartida" value=0>
-    <button onclick="crearPartida()">Crear partida</button><br>
-    <label id="sCrearPartida"></label><br><br>
 
-    CONSULTA PARTIDES: <br>
-    <button onclick="consultaPartides()">Consultar totes les partides</button><br>
-    <label id="sConsultaPartides"></label><br><br>
+    <div class="container">
+        <h3 class="text-primary" style="margin-top: 20px; text-align: center;">Joc del Pedra, Paper i Tisora</h3><br />
 
-    CONSULTA UNA PARTIDA: <br>
-    GameCode: <input type="number" name="consultarPartida" id="consultarPartida" value=0>
-    <button onclick="consultarPartida()">Consultar partida</button><br>
-    <label id="sConsultarPartida"></label><br><br>
+        <!-- Consultar estat del servidor -->
+        <label style="font-weight: bold;" class="text-primary">ESTAT DEL SERVIDOR: </label><br />
+        <label style="font-weight: bold" id="estatServidor"></label><br /><br />
 
-    CAMBIAR JUGADA: <br>
-    GameCode: <input type="number" name="codiPartida" id="codiPartida" value=0><br>
-    Jugador: <input type="number" name="jugador" id="jugador" value=0><br>
-    <select id="jugadaEscollida" name="jugadaEscollida">
-        <option value="pedra">Pedra</option>
-        <option value="paper">Paper</option>
-        <option value="tisora">Tisores</option>
-    </select><br>
-    <button onclick="cambiarJugada()">Fer moviment</button><br>
-    <label id="sCambiarJugada"></label><br><br>
+        <div style="display: flex; justify-content: space-between;">
+            <div>
+                <!-- Crear / iniciar una nova partida -->
+                <label style="font-weight: bold;" class="text-primary">CREAR / INICIAR UNA NOVA PARTIDA: </label><br />
+                Introdueix el codi de partida de la partida que vols iniciar: <input type="number" name="gameCode" id="gameCode" value="0" ><br />
+                <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="iniciarPartida()">Iniciar partida</button><br />
+                <label style="font-weight: bold" id="partidaIniciada"></label><br /><br />
+            </div>
+            <div>
+                <!-- Eliminar una partida -->
+                <label style="font-weight: bold;" class="text-primary">ELIMINAR UNA PARTIDA: </label><br />
+                Introdueix el codi de partida de la partida que vols eliminar: <input type="number" name="esborrarPartida" id="esborrarPartida" value="0" ><br />
+                <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="eliminarPartida()">Eliminar partida</button><br />
+                <label style="font-weight: bold" id="partidaEliminada"></label><br /><br />
+            </div>
+        </div>
 
+        <!-- Consultar l'estat d'una partida -->
+        <label style="font-weight: bold;" class="text-primary">CONSULTAR ESTAT D'UNA PARTIDA: </label><br />
+        Introdueix el codi de partida de la partida que vols consultar: <input type="number" name="consultarGameCode" id="consultarGameCode" value="0" ><br />
+        <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="consultarPartida()">Consultar partida</button><br />
+        <div>
+            <label style="font-weight: bold" id="partidaConsultada"></label><br /><br />
+        </div>
 
+        <!-- Indicar el jugador i la jugada que treu un jugador a una partida -->
+        <label style="font-weight: bold;" class="text-primary">INDICAR JUGADOR I TREURE JUGADA A UNA PARTIDA: </label><br />
+        Introdueix el codi de partida de la partida que vols llançar jugada: &nbsp&nbsp <input type="number" name="escollirGameCode" id="escollirGameCode" value="0" ><br /><br />
+        Introdueix el número de jugador que seràs (Jugador 1 o Jugador 2): 
+        <select id="jugadorEscollit" name="jugadorEscollit">
+            <option value="1">1</option>
+            <option value="2">2</option>
+        </select><br /><br />
+        Selecciona la jugada que llançaràs a la partida: 
+        <select id="jugadaEscollida" name="jugadaEscollida">
+            <option value="pedra">Pedra</option>
+            <option value="paper">Paper</option>
+            <option value="tisora">Tisora</option>
+        </select><br />
+        <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="escollirJugada()">Escollir jugada</button><br />
+        <label style="font-weight: bold" id="jugadaSeleccionada"></label><br /><br />
+
+        <!-- Jugar un torn a una partida en concret amb les jugades seleccionades pels jugadors -->
+        <label style="font-weight: bold;" class="text-primary">JUGAR PARTIDA: </label><br />
+        Introdueix el codi de partida de la partida que vols jugar: <input type="number" name="jugarCodiPartida" id="jugarCodiPartida" value="0" ><br />
+        <button type="button" class="btn btn-primary" style="margin: 5px 5px 5px 0px;" onclick="jugarPartida()">Jugar partida</button><br />
+        <label style="font-weight: bold" id="partidaJugada"></label><br /><br />
+        <button type="button" class="btn btn-info" style="display: block; margin: auto;" onclick="netejarDades()">Netejar dades</button><br />
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
 </body>
-
 </html>
